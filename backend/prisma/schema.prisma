@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  
+}
+
+enum SubmissionStatus {
+  PENDING
+  REVIEWED
+}
+
+model User {
+  id              Int          @id @default(autoincrement())
+  clerkId         String       @unique
+  email           String       @unique
+  firstName       String?
+  lastName        String?
+  nickname        String?
+  profileImageUrl String?
+  karmaPoints     Int          @default(0)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  submissions     Submission[]
+  reviews         Review[]
+
+  @@map("users")
+}
+
+model Submission {
+  id              Int              @id @default(autoincrement())
+  userId          Int // Foreign key column
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  description     String           @db.Text
+  githubUrl       String
+  status          SubmissionStatus @default(PENDING)
+  reviews         Review[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  reviewCriterias ReviewCriteria[]
+
+  @@map("submissions")
+}
+
+model Review {
+  id           Int        @id @default(autoincrement())
+  reviewerId   Int
+  reviewer     User       @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  submissionId Int
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  strengths    String     @db.Text
+  improvements String     @db.Text
+  ratings      Rating[]
+  resources    String?
+  createdAt    DateTime   @default(now())
+
+  @@map("reviews")
+}
+
+model ReviewCriteria {
+  id           Int        @id @default(autoincrement())
+  name         String
+  submissionId Int
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  ratings      Rating[]
+
+  @@map("review_criteria")
+}
+
+model Rating {
+  id         Int            @id @default(autoincrement())
+  score      Int
+  reviewId   Int
+  criteriaId Int
+  review     Review         @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  criteria   ReviewCriteria @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
+
+  @@map("ratings")
+}
