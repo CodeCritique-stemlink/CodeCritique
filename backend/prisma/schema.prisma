@@ -5,7 +5,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -23,7 +23,7 @@ model User {
   email           String       @unique
   firstName       String?
   lastName        String?
-  userName        String?      @unique
+  userName        String      @unique
   profileImageUrl String?
   karmaPoints     Int          @default(0)
   createdAt       DateTime     @default(now())
@@ -53,10 +53,10 @@ model Submission {
 }
 
 model Tag {
-  id          Int          @id @default(autoincrement())
-  name        String       @unique
-  submissions Submission[]
-  users       User[]
+  id              Int          @id @default(autoincrement())
+  name            String       @unique
+  submissions     Submission[]
+  interestedUsers User[]
 
   @@map("tags")
 }

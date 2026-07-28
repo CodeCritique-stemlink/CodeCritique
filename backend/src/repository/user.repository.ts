@@ -3,20 +3,33 @@ import type { User } from "../generated/prisma/client.js";
 
 export class UserRepository {
   async findByClerkId(clerkId: string): Promise<User | null> {
-    return await prisma.user.findUnique({ where: { clerkId } });
+    return await prisma.user.findUnique({
+      where: { clerkId },
+    });
   }
 
   async findById(id: number): Promise<User | null> {
-    return await prisma.user.findUnique({ where: { id } });
-  }
+    return await prisma.user.findUnique({
+    where: { id },
+    include: {
+      interestedTags: true, 
+      submissions: true,
+    },
+  });
+}
 
   async createUser(data: {
     clerkId: string;
     email: string;
     firstName?: string;
     lastName?: string;
+    userName: string;
   }): Promise<User> {
     return await prisma.user.create({ data });
+  }
+
+  async findByUserName(userName : string) :Promise < User | null>{
+    return await prisma.user.findUnique({where : { userName:userName }});
   }
 
   async incrementKarma(userId: number, points: number): Promise<User> {
@@ -38,5 +51,11 @@ export class UserRepository {
 
   async getProfile(id: number) {
     return prisma.user.findUnique({ where: { id } });
+  }
+
+  async deleteUser(userId: number):Promise<User>{
+    return await prisma.user.delete({
+      where:{id:userId},
+    })
   }
 }
