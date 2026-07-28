@@ -10,7 +10,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  
 }
 
 enum SubmissionStatus {
@@ -24,13 +23,14 @@ model User {
   email           String       @unique
   firstName       String?
   lastName        String?
-  nickname        String?
+  userName        String?      @unique
   profileImageUrl String?
   karmaPoints     Int          @default(0)
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
   submissions     Submission[]
   reviews         Review[]
+  techStack       String[]
 
   @@map("users")
 }
@@ -47,8 +47,17 @@ model Submission {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   reviewCriterias ReviewCriteria[]
+  tags            Tag[]
 
   @@map("submissions")
+}
+
+model Tag {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  submissions Submission[]
+
+  @@map("tags")
 }
 
 model Review {

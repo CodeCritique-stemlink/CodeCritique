@@ -1,0 +1,16 @@
+# Ignore dependencies for all projects
+**/node_modules/
+node_modules/
+
+# Ignore environment files
+.env
+*.env
+.env.local
+
+# Ignore builds
+dist/
+.next/
+
+# Ignore Prisma generation targets
+backend/src/generated/
+backend/generated/
