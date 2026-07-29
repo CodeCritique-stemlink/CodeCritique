@@ -6,6 +6,7 @@ import globalRouter from "./routes/index.js";
 const app = express();
 const PORT =3000;
 app.use(express.json());
+
 app.use(clerkMiddleware());
 
 app.use("/api", globalRouter);

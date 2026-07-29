@@ -28,6 +28,7 @@ export const requireAuth = async (
 ): Promise<void> => {
   const auth = getAuth(req);
   const clerkId = auth.userId;
+  
 
   if (!clerkId) {
     res.status(401).json({
@@ -40,9 +41,7 @@ export const requireAuth = async (
   try {
     let localUser = await userRepository.findByClerkId(clerkId);
     if (!localUser) {
-      console.log(
-        `No local user found for clerkId: ${clerkId}. Creating new user...`,
-      );
+      console.log(`No local user found for clerkId: ${clerkId}. Creating new user...`);
       const clerkUser = await clerkClient.users.getUser(clerkId);
       const email = clerkUser.emailAddresses[0]?.emailAddress;
       if (!email) {

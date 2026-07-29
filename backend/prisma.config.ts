@@ -7,6 +7,7 @@ const config: any = {
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
+    
   },
 };
 

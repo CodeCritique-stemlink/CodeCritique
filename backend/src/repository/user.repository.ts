@@ -30,7 +30,7 @@ export class UserRepository {
   }
 
   async findByUserName(userName : string) :Promise < User | null>{
-    return await prisma.user.findUnique({where : { userName:userName }});
+    return await prisma.user.findUnique({where : { userName }});
   }
 
   async incrementKarma(userId: number, points: number): Promise<User> {
