@@ -33,16 +33,7 @@ export class UserRepository {
     return await prisma.user.findUnique({where : { userName }});
   }
 
-  async incrementKarma(userId: number, points: number): Promise<User> {
-    return await prisma.user.update({
-      where: { id: userId },
-      data: {
-        karmaPoints: {
-          increment: points,
-        },
-      },
-    });
-  }
+
   async updateUser(userId: number, data: UpdateUserInput): Promise<any> {
     const { interestedTagIds, ...rest } = data;
     const updateData: any = { ...rest };
@@ -62,13 +53,5 @@ export class UserRepository {
     });
   }
 
-  async getProfile(id: number) {
-    return prisma.user.findUnique({ where: { id } });
-  }
 
-  async deleteUser(userId: number):Promise<User>{
-    return await prisma.user.delete({
-      where:{id:userId},
-    })
-  }
-}
+ }

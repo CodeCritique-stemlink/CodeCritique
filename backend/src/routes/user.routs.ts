@@ -7,4 +7,5 @@ const userController = new UserController();
 
 userRouter.get("/profile", requireAuth, userController.getProfile);
 
+
 export default userRouter;

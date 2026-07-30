@@ -6,21 +6,21 @@ import type { UpdateUserInput } from "../models/user.schema.js";
 
 
 
+
 const clerkClient = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY || "",
 });
 const userRepository = new UserRepository();
 
 export class UserService {
-  userRepository: any;
   async findOrCreateLocalUser(clerkId: string): Promise<User> {
     
     let localUser = await userRepository.findByClerkId(clerkId);
 
     
-    if (localUser) {
-      return localUser;
-    }
+    if (!localUser) {
+      
+    
       const clerkUser = await clerkClient.users.getUser(clerkId);
       const email = clerkUser.emailAddresses[0]?.emailAddress;
 
@@ -37,26 +37,37 @@ export class UserService {
       if (clerkUser.lastName) userData.lastName = clerkUser.lastName;
 
       localUser = await userRepository.createUser(userData);
+    }
       return localUser;
     }
 
     
   async getUserProfile(userId: number): Promise<any> {
-    return await userRepository.findById(userId);
+     const user = await userRepository.findById(userId);
+
+     if(!user){
+      throw new Error("Not Found")
+     }
+     return user
   }
   async getByUserName(userName : string): Promise <User | null>{
-    return await userRepository.findByUserName(userName)
+    const userByName = await userRepository.findByUserName(userName);
+
+    if(!userByName){
+      throw new Error("User Not Found")
+    }
+    return userByName
   }
 
   async updateUserProfile(userId: number, data: UpdateUserInput): Promise<any> {
-    return await userRepository.updateUser(userId, data);
+    const existingUser  = await userRepository.updateUser(userId, data);
+
+    if(!existingUser ){
+      throw new Error("User Not Found")
+    } 
+    return existingUser
   }
 
-  async deleteUserProfile(userId : number):Promise <User>{
-    return await userRepository.deleteUser(userId );
-  }
 
-  async incrementKarma(userId: number, points: number): Promise<User> {
-    return await userRepository.incrementKarma(userId, points);
-  }
- }
+    
+}

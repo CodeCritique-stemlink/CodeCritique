@@ -17,6 +17,8 @@ declare global {
         firstName?: string | null;
         lastName?: string | null;
         userName: string;
+        karmaPoints:number |null
+        profileImageUrl?:string |null
       };
     }
   }
@@ -55,6 +57,7 @@ export const requireAuth = async (
         clerkId: clerkUser.id,
         email: email,
         userName: clerkUser.username ,
+        
       };
       if (clerkUser.firstName) {
         userData.firstName = clerkUser.firstName;
@@ -73,6 +76,8 @@ export const requireAuth = async (
       firstName: localUser.firstName,
       lastName: localUser.lastName,
       userName: localUser.userName,
+      karmaPoints:localUser.karmaPoints,
+      profileImageUrl:localUser.profileImageUrl,
     };
 
     next();
