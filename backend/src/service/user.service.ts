@@ -61,12 +61,12 @@ export class UserService {
   }
 
   async updateUserProfile(userId: number, data: UpdateUserInput): Promise<any> {
-    const existingUser  = await userRepository.updateUser(userId, data);
+    const updatedUser  = await userRepository.findById(userId);
 
-    if(!existingUser ){
+    if(!updatedUser ){
       throw new Error("User Not Found")
     } 
-    return existingUser
+    return await userRepository.updateUser(userId,data)
   }
   async deleteUser(userId:number):Promise<User> {
     const user = await userRepository.findById(userId);

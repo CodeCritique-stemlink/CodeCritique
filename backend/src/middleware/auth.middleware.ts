@@ -28,6 +28,7 @@ export const requireAuth = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+
   const auth = getAuth(req);
   const clerkId = auth.userId;
   
