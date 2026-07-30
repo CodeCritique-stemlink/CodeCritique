@@ -7,6 +7,7 @@ import type { UpdateUserInput } from "../models/user.schema.js";
 
 
 
+
 const clerkClient = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY || "",
 });
@@ -66,6 +67,15 @@ export class UserService {
       throw new Error("User Not Found")
     } 
     return existingUser
+  }
+  async deleteUser(userId:number):Promise<User> {
+    const user = await userRepository.findById(userId);
+
+    if(!user){
+      throw new Error("User not found")
+    }
+    return await userRepository.deleteUser(userId)
+
   }
 
 
