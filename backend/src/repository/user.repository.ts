@@ -1,3 +1,4 @@
+import { id } from "zod/locales";
 import { prisma } from "../config/prisma.js";
 import type { Tag, User } from "../generated/prisma/client.js";
 import type { UpdateUserInput } from "../models/user.schema.js"; 
@@ -51,6 +52,12 @@ export class UserRepository {
         interestedTags: true,
       },
     });
+    
+  }
+    async deleteUser(id:number):Promise<User> {
+      return await prisma.user.delete({where: {  id }
+      })
+    
   }
 
 
