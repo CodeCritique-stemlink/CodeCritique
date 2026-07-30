@@ -1,5 +1,6 @@
-import {getAllsubmissions} from "../repository/submissionRepository.js";
+import { getAllSubmissions } from "../repository/submissionRepository.js";
+
 export async function getAllSubmissionsService() {
-    const submissions = await getAllsubmissions();
+    const submissions = await getAllSubmissions();
     return submissions;
 }

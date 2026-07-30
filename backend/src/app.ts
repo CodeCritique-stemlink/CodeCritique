@@ -1,18 +1,19 @@
 import express, { type Request, type Response } from "express";
-import { clerkMiddleware } from '@clerk/express'
-import { fetchAllSubmissions } from "./service/submissionService.js";
+// import { clerkMiddleware } from '@clerk/express';
+import { getAllSubmissionsService } from "./service/submissionService.js";
 
 const app = express();
 const PORT = 3000;
 app.use(express.json());
-app.use(clerkMiddleware());
+// app.use(clerkMiddleware());
 
 app.get("/api/submissions", async (req: Request, res: Response) => {
     try {
-        const submissions = await fetchAllSubmissions();
+        const submissions = await getAllSubmissionsService();
         res.json(submissions);
     } catch (error) {
-        res.status(500).json({error: "Failed to fetch submissions"});
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch submissions" });
     }
 });
 
