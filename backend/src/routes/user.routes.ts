@@ -10,6 +10,6 @@ const userController = new UserController();
 userRouter.get("/profile", requireAuth, userController.getProfile);
 userRouter.delete("/profile", requireAuth, userController.deleteProfile);
 userRouter.put("/profile",requireAuth, validate(updateUserSchema), userController.updateProfile);
-
+userRouter.get("/profile/:UserName", requireAuth, userController.getProfile);
 
 export default userRouter;

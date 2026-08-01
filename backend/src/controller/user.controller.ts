@@ -26,6 +26,23 @@ export class UserController {
     },
   );
 
+    getUserByName = catchAsync(
+    async (req: Request, res: Response): Promise<void> => {
+      const userId = req.user!.id;
+      const user = await userService.getUserProfile(userId);
+
+      if (!user) {
+        throw new Error("User profile not found");
+      }
+
+      res.json({
+        success: true,
+        message: "User profile retrieved successfully",
+        user,
+      });
+    },
+  );
+
     updateProfile = catchAsync(async (req: Request, res: Response): Promise<void> => {
     const userId = req.user!.id;
     const clerkId = req.user!.clerkId;

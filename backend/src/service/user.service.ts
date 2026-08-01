@@ -4,10 +4,6 @@ import { UserRepository } from "../repository/user.repository.js";
 import type { User } from "../generated/prisma/client.js";
 import type { UpdateUserInput } from "../models/user.schema.js";
 
-
-
-
-
 const clerkClient = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY || "",
 });
@@ -21,7 +17,6 @@ export class UserService {
     
     if (!localUser) {
       
-    
       const clerkUser = await clerkClient.users.getUser(clerkId);
       const email = clerkUser.emailAddresses[0]?.emailAddress;
 
@@ -42,6 +37,14 @@ export class UserService {
       return localUser;
     }
 
+      async createUserProfile(userId: number): Promise<any> {
+     const user = await userRepository.findById(userId);
+
+     if(!user){
+      throw new Error("Not Found")
+     }
+     return user
+  }
     
   async getUserProfile(userId: number): Promise<any> {
      const user = await userRepository.findById(userId);
@@ -68,6 +71,7 @@ export class UserService {
     } 
     return await userRepository.updateUser(userId,data)
   }
+
   async deleteUser(userId:number):Promise<User> {
     const user = await userRepository.findById(userId);
 
