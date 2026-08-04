@@ -5,7 +5,7 @@ const submissionRepository =new SubmissionRepository();
 
 export class SubmissionService {
     async createSubmission(userId: number, data: CreateSubmissionInput){
-        const submission = await submissionRepository.createWithKarma(userId , data, 2)
+        const submission = await submissionRepository.create(userId , data)
         return submission;
     }
     async getAllSubmissions(filters:GetSubmissionsQueryInput){

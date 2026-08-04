@@ -22,39 +22,7 @@ export class SubmissionRepository {
       },
     });
   }
-  async createWithKarma(
-    userId: number,
-    data: CreateSubmissionInput,
-    karmaPoints: number,
-  ): Promise<any> {
-    const { tagIds, ...rest } = data;
-    const createData: any = { userId, ...rest };
-    if (tagIds && tagIds.length > 0) {
-      createData.tags = {
-        connect: tagIds.map((id) => ({ id })),
-      };
-    }
 
-    return await prisma.$transaction(async (tx) => {
-      const submission = await tx.submission.create({
-        data: createData,
-        include: {
-          tags: true,
-        },
-      });
-
-      await tx.user.update({
-        where: { id: userId },
-        data: {
-          karmaPoints: {
-            increment: karmaPoints,
-          },
-        },
-      });
-
-      return submission;
-    });
-  }
 
   async findById(id: number): Promise<any | null> {
     return await prisma.submission.findUnique({

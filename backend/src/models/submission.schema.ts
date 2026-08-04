@@ -20,7 +20,6 @@ export const createSubmissionSchema = z.object({
   }),
 });
 
-// Query string validation for advanced GET /submissions configurations
 export const getSubmissionsQuerySchema = z.object({
   query: z.object({
     page: z
@@ -32,7 +31,7 @@ export const getSubmissionsQuerySchema = z.object({
       .string()
       .optional()
       .default("10")
-      .transform((val) => Math.min(50, Math.max(1, parseInt(val, 10) || 10))), // Caps items per page at 50
+      .transform((val) => Math.min(50, Math.max(1, parseInt(val, 10) || 10))),
     sortBy: z
       .enum(["title", "createdAt"])
       .optional()
@@ -100,7 +99,7 @@ export const updateSubmissionSchema = z.object({
       .regex(/^https:\/\/github\.com\//, "URL must start with https://github.com/")
       .trim()
       .optional(),
-    tagIds: z.array(z.number()).optional(),
+    tagIds: z.array(z.number().int().positive()).optional(),
   }),
 });
 
