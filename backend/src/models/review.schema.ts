@@ -1,6 +1,21 @@
 import z from "zod";
 
 export const createReviewSchema = z.object({
+    params: z.object({
+    submissionId: z.string().transform((val, ctx) => {
+      const parsed = Number(val);
+
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Submission ID must be a number",
+        });
+        return z.NEVER;
+      }
+
+      return parsed;
+    }),
+  }),
   body: z.object({
     strengths: z
       .string({ message: "Required" })
@@ -24,6 +39,37 @@ export const createReviewSchema = z.object({
         }),
       )
       .min(1),
+  }),
+});
+export const getReviewSchema = z.object({
+  params: z.object({
+    submissionId: z.string().transform((val, ctx) => {
+      const parsed = Number(val);
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Submission ID must be a number",
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    }),
+  }),
+});
+
+export const deleteReviewSchema = z.object({
+  params: z.object({
+    id: z.string().transform((val, ctx) => {
+      const parsed = Number(val);
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "ID must be a number",
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    }),
   }),
 });
 

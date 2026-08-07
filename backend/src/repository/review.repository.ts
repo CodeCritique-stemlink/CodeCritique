@@ -2,7 +2,7 @@ import { prisma } from "../config/prisma.js";
 import type { CreateReviewInputs } from "../models/review.schema.js";
 
 export class ReviewRepository {
-  async create(
+  async createWithKarma(
     reviewerId: number,
     submissionId: number,
     data: CreateReviewInputs,
@@ -82,24 +82,6 @@ export class ReviewRepository {
   async findById(id: number): Promise<any | null> {
     return await prisma.review.findUnique({
       where: { id },
-      include: {
-        reviewer: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            userName: true,
-            karmaPoints: true,
-            profileImageUrl: true,
-          },
-        },
-        submission: true,
-        ratings: {
-          include: {
-            criteria: true,
-          },
-        },
-      },
     });
   }
 
@@ -156,7 +138,7 @@ export class ReviewRepository {
     });
   }
 
-  async delete(id: number): Promise<any> {
+  async deleteReview(id: number): Promise<any> {
     return await prisma.review.delete({
       where: {
         id,
