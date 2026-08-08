@@ -43,7 +43,7 @@ export class ReviewService {
     if (!review) {
       throw new Error("Comment not found");
     }
-    if (review.reviewId !== userId) {
+    if (review.reviewerId !== userId) {
       throw new Error("You are not authorized to delete this comment");
     }
     return await reviewRepository.deleteReview(id);

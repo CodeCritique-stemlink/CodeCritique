@@ -1,8 +1,9 @@
 import z from "zod";
+import type { id } from "zod/locales";
 
 export const createReviewSchema = z.object({
     params: z.object({
-    submissionId: z.string().transform((val, ctx) => {
+    submissionId: z.coerce.string().transform((val, ctx) => {
       const parsed = Number(val);
 
       if (isNaN(parsed)) {
@@ -43,6 +44,22 @@ export const createReviewSchema = z.object({
 });
 export const getReviewSchema = z.object({
   params: z.object({
+    reviewerId: z.string().transform((val, ctx) => {
+      const parsed = Number(val);
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Submission ID must be a number",
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    }),
+  }),
+});
+
+export const getReviewBySubmissionSchema = z.object({
+  params: z.object({
     submissionId: z.string().transform((val, ctx) => {
       const parsed = Number(val);
       if (isNaN(parsed)) {
@@ -57,6 +74,21 @@ export const getReviewSchema = z.object({
   }),
 });
 
+export const getReviewByIdSchema = z.object({
+  params: z.object({
+    id: z.string().transform((val, ctx) => {
+      const parsed = Number(val);
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Submission ID must be a number",
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    }),
+  }),
+});
 export const deleteReviewSchema = z.object({
   params: z.object({
     id: z.string().transform((val, ctx) => {
