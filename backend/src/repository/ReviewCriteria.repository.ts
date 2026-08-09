@@ -2,7 +2,7 @@ import { prisma } from "../config/prisma.js";
 import type { CreateReviewCriteriaInput } from "../models/ReviewCriteria.schema.js";
 
 export class ReviewCriteriaERepository {
-  async createMany(data: CreateReviewCriteriaInput) {
+  async createMany(data: CreateReviewCriteriaInput):Promise<any> {
     const { submissionId, criteria } = data;
 
   return await prisma.$transaction(async (tx) => {
@@ -20,7 +20,7 @@ export class ReviewCriteriaERepository {
     });
   });
   }
-  async findByCriteriaId(id: number) {
+  async findByCriteriaId(id: number) :Promise<any | null>{
     return await prisma.reviewCriteria.findUnique({
       where: { id },
       include: {
@@ -29,7 +29,7 @@ export class ReviewCriteriaERepository {
       },
     });
   }
-  async findBySubmissionId(submissionId: number) {
+  async findBySubmissionId(submissionId: number):Promise<any> {
     return await prisma.reviewCriteria.findMany({
       where: { submissionId },
       include: {
@@ -41,7 +41,7 @@ export class ReviewCriteriaERepository {
     });
   }
 
-  async update(id: number, name: string) {
+  async update(id: number, name: string):Promise<any> {
     return await prisma.reviewCriteria.update({
       where: { id },
       data: {
@@ -50,7 +50,7 @@ export class ReviewCriteriaERepository {
     });
   }
 
-  async delete(id: number) {
+  async delete(id: number) :Promise<any>{
     return await prisma.reviewCriteria.delete({
       where: { id },
     });
