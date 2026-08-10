@@ -1,5 +1,5 @@
 import type {
-  CreateRatingInput,
+  
   UpdateRatingInput,
 } from "../models/rating.schema.js";
 import { RatingRepository } from "../repository/rating.repository.js";
@@ -9,13 +9,7 @@ const ratingRepository = new RatingRepository();
 const reviewRepository = new ReviewRepository();
 
 export class RatingService {
-  async create(reviewId: number, data: CreateRatingInput) {
-    const review = await reviewRepository.findById(reviewId);
-    if (!review) {
-      throw new Error("Review not found");
-    }
-    return await ratingRepository.create(reviewId, data);
-  }
+
   async findById(id: number) {
     const rating = await ratingRepository.findById(id);
     if (!rating) {
@@ -24,7 +18,7 @@ export class RatingService {
     return rating;
   }
   async findByReview(reviewId: number) {
-    const review = await ratingRepository.findById(reviewId);
+    const review = await reviewRepository.findById(reviewId);
     if (!review) {
       throw new Error("Review not found");
     }
@@ -38,12 +32,13 @@ export class RatingService {
     return rating;
   }
   async deleteRatinga(id: number, userId: number) {
-    const rating = await ratingRepository.delete(id);
+    const rating = await ratingRepository.findById(id);
     if (!rating) {
       throw new Error("rating not found");
     }
-    if (rating.submission.userId !== userId) {
-      throw new Error("You are not authorized to delete this review criteria");
+    if (rating.review?.reviewerId !== userId) {
+      throw new Error("You are not authorized to delete this rating");
     }
+    return await ratingRepository.delete(id)
   }
 }
