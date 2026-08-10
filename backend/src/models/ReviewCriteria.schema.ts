@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { id } from "zod/locales";
+
 
 
 export const createReviewCriteriaSchema = z.object({
@@ -33,11 +33,40 @@ export const updateReviewCriteriaSchema = z.object({
   }),
 });
 
+
+
 export const reviewCriteriaIdSchema = z.object({
   params: z.object({
-    id: z.string().transform((val) => Number(val)),
+    id: z.string().transform((val, ctx) => {
+      const parsed = Number(val);
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "ID must be a number",
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    }),
   }),
 });
+
+export const reviewCriteriaBySubmissionIdSchema = z.object({
+  params: z.object({
+    submissionId: z.string().transform((val, ctx) => {
+      const parsed = Number(val);
+      if (isNaN(parsed)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "ID must be a number",
+        });
+        return z.NEVER;
+      }
+      return parsed;
+    }),
+  }),
+});
+
 
 export const deleteReviewCriteriaSchema = z.object({
   params: z.object({
