@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { type Request, type Response } from "express";
 // import { clerkMiddleware } from '@clerk/express';
 import { getAllSubmissionsService } from "./service/submissionService.js";
