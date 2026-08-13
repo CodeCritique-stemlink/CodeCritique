@@ -8,6 +8,7 @@ import {
   Show,
   UserButton,
 } from "@clerk/nextjs";
+import Navbar from "@/components/navBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,10 +37,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
         <body className="min-h-full flex flex-col">
-          <header className="flex justify-between items-center p-4 border-b">
+          <Navbar/>
+          {/* <header className="flex justify-between items-center p-4 border-b">
             <span className="font-semibold">CodeCritic</span>
             <div className="flex items-center gap-4">
               <Show when="signed-out">
+                
                 <SignInButton />
                 <SignUpButton />
               </Show>
@@ -47,7 +50,7 @@ export default function RootLayout({
                 <UserButton />
               </Show>
             </div>
-          </header>
+          </header> */}
           {children}
         </body>
       </html>
