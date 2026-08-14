@@ -5,7 +5,7 @@ import globalRouter from "./routes/index.js";
 import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = Number(process.env.PORT) || 4000;
 
 app.use(express.json());
 
@@ -34,6 +34,6 @@ app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on ⚡ http://localhost:${PORT}`);
+app.listen(PORT,"0.0.0.0",() => {
+    console.log(`Server is running on ⚡${PORT}`);
 });
