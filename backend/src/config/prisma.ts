@@ -9,7 +9,12 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is missing in .env");
 }
 
-const pool = new Pg.Pool({connectionString});
+const pool = new Pg.Pool({
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 const adapter =new PrismaPg(pool); 
 
 export const prisma =new PrismaClient({adapter})

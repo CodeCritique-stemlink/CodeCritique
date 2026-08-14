@@ -55,10 +55,9 @@ export const requireAuth = async (
         return;
       }
       const userData: any = {
-        clerkId: clerkUser.id,
-        email: email,
-        userName: clerkUser.username ,
-        
+      clerkId: clerkUser.id,
+      email: email,
+      userName: clerkUser.username || email.split("@")[0],
       };
       if (clerkUser.firstName) {
         userData.firstName = clerkUser.firstName;
