@@ -51,7 +51,7 @@ export default function SubmitPage() {
 
     console.log("API URL is:", process.env.NEXT_PUBLIC_API_URL);
 
-    const res1 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/submissions`, {
+    const res1 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/submissions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export default function SubmitPage() {
 
     const submissionId = data1.data.id;
 
-    const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/criterias`, {
+    const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/criterias`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
