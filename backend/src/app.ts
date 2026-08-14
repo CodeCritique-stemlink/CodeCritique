@@ -2,11 +2,17 @@ import "dotenv/config";
 import express, { type Request, type Response } from "express";
 import { clerkMiddleware } from '@clerk/express';
 import globalRouter from "./routes/index.js";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
+
+app.use(cors({
+origin: "http://localhost:3000",
+credentials: true,
+}));
 
 app.use(clerkMiddleware());
 
