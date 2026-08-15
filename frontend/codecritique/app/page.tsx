@@ -50,7 +50,7 @@ export default function Home() {
     const loadSubmissions = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/submissions`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/submissions`
         );
         const data = await res.json();
 
@@ -72,7 +72,7 @@ export default function Home() {
         // logged-in: fetch their tech stack and reorder
         const token = await getToken();
         const profileRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile`,
           { headers: { Authorization: "Bearer " + token } }
         );
         const profileData = await profileRes.json();
