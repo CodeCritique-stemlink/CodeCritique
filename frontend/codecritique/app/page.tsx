@@ -1,7 +1,28 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
+
+const TAG_COLORS: Record<string, string> = {
+  javascript: "#F7DF1E",
+  typescript: "#2563EB",
+  python: "#2B6CB0",
+  react: "#23484f",
+  "next.js": "#18181B",
+  "node.js": "#2F8B3F",
+  java: "#b7ce0a",
+  "c++": "#6c0b74",
+  go: "#00A8C6",
+  sql: "#D97706",
+};
+
+function getTextColor(hex: string) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness > 150 ? "#000000" : "#FFFFFF";
+}
 
 type Submission = {
   id: number;
@@ -19,9 +40,11 @@ type Submission = {
 };
 
 export default function Home() {
+  const { getToken, isSignedIn, isLoaded } = useAuth();
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
+  const [personalized, setPersonalized] = useState(false);
 
   useEffect(() => {
     const loadSubmissions = async () => {
@@ -33,18 +56,70 @@ export default function Home() {
 
         if (!res.ok) {
           setErrorMsg(data.message || "Could not load submissions");
-        } else {
-          setSubmissions(data.data);
+          setLoading(false);
+          return;
         }
+
+        const allSubmissions: Submission[] = data.data;
+
+        // logged-out visitors just see most-recent-first, unchanged
+        if (!isSignedIn) {
+          setSubmissions(allSubmissions);
+          setLoading(false);
+          return;
+        }
+
+        // logged-in: fetch their tech stack and reorder
+        const token = await getToken();
+        const profileRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
+          { headers: { Authorization: "Bearer " + token } }
+        );
+        const profileData = await profileRes.json();
+        const myTagIds: number[] = (profileData.user.interestedTags || []).map(
+          (t: { id: number }) => t.id
+        );
+
+        if (myTagIds.length === 0) {
+          // no tech stack picked yet, nothing to personalize against
+          setSubmissions(allSubmissions);
+          setLoading(false);
+          return;
+        }
+
+        const now = Date.now();
+
+        const scored = allSubmissions.map((s) => {
+          const matchingTags = s.tags.filter((t) =>
+            myTagIds.includes(t.id)
+          ).length;
+
+          const ageInDays =
+            (now - new Date(s.createdAt).getTime()) / (1000 * 60 * 60 * 24);
+
+          // recency bonus: newer posts get a small boost, decaying over 14 days
+          const recencyBonus = Math.max(0, 14 - ageInDays) / 14;
+
+          const score = matchingTags * 10 + recencyBonus;
+
+          return { ...s, _score: score };
+        });
+
+        scored.sort((a, b) => b._score - a._score);
+
+        setSubmissions(scored);
+        setPersonalized(true);
+        setLoading(false);
       } catch (err) {
         setErrorMsg("Could not connect to server");
-      } finally {
         setLoading(false);
       }
     };
 
-    loadSubmissions();
-  }, []);
+    if (isLoaded) {
+      loadSubmissions();
+    }
+  }, [isLoaded, isSignedIn]);
 
   return (
     <div className="flex flex-col flex-1 bg-zinc-50 dark:bg-black">
@@ -59,9 +134,16 @@ export default function Home() {
         </div>
 
         <div className="col-span-5 bg-zinc-50 dark:bg-black p-6">
-          <h1 className="text-xl font-semibold mb-4 text-zinc-900 dark:text-zinc-100">
-            Recent Review Requests
-          </h1>
+          <div className="flex items-center gap-2 mb-4">
+            <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+              Recent Review Requests
+            </h1>
+            {personalized && (
+              <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-medium">
+                Personalized for you
+              </span>
+            )}
+          </div>
 
           {loading && (
             <p className="text-zinc-500 text-sm">Loading submissions...</p>
@@ -95,6 +177,24 @@ export default function Home() {
                 <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1 line-clamp-2">
                   {submission.description}
                 </p>
+
+                {submission.tags && submission.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {submission.tags.map((tag) => {
+                      const color = TAG_COLORS[tag.name] || "#6B7280";
+                      const textColor = getTextColor(color);
+                      return (
+                        <span
+                          key={tag.id}
+                          style={{ backgroundColor: color, color: textColor }}
+                          className="inline-flex items-center justify-center text-[10px] font-semibold leading-none px-2.5 py-1.5 rounded-full"
+                        >
+                          {tag.name}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
 
                 <div className="flex items-center gap-3 mt-3">
                   <span className="text-xs text-zinc-500">
