@@ -14,6 +14,7 @@ export default function SubmitPage() {
   const [criteria, setCriteria] = useState(["", "", ""]);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [techTags, setTechTags] = useState("")
 
   const handleCriteriaChange = (i: number, val: string) => {
     const newCriteria = [...criteria];
@@ -46,6 +47,7 @@ export default function SubmitPage() {
       setLoading(false);
       return;
     }
+    const tagArray = techTags.split(",").map(tag => tag.trim()).filter(tag => tag !== "");
 
     const token = await getToken();
 
@@ -61,6 +63,7 @@ export default function SubmitPage() {
         title: title,
         description: description,
         githubUrl: githubUrl,
+        tags: tagArray,
       }),
     });
 
@@ -173,11 +176,22 @@ export default function SubmitPage() {
           )}
         </div>
 
-        {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+        <div style={{ marginBottom: "15px" }}>
+          <label>Tech Tags (comma separated)</label>
+          <br />
+          <input
+            type="text"
+            value={techTags}
+            onChange={(e) => setTechTags(e.target.value)}
+            placeholder="e.g. nextjs, react, typescript"
+            style={{ width: "100%", padding: "8px" }}
+          /></div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Submitting..." : "Submit"}
-        </button>
+          {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
       </form>
     </div>
   );
