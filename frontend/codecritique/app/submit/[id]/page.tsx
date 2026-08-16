@@ -229,7 +229,7 @@ export default function SubmissionByIdPage() {
                     <CardContent>
                         {Reviews.length === 0 ? (
                             <div className="rounded-lg border border-dashed p-6 text-center">
-                                <p className="text-sm text-muted-foreground">No reviews yet. </p>
+                                <p className="text-sm text-zinc-700">No reviews yet. </p>
                                 <p className="mt-1 text-xs text-gray-700">
                                     Be the first person to review this project.
                                 </p>
@@ -282,7 +282,7 @@ export default function SubmissionByIdPage() {
                                             </div>
 
                                             {review.strengths && (
-                                                <p className="mt-4 line-clamp-2 text-sm text-muted-foreground"> {review.strengths}</p>
+                                                <p className="mt-4 line-clamp-2 text-sm text-zinc-700"> {review.strengths}</p>
                                             )}
 
                                             <Button type="button" variant="outline" size="sm" className="mt-4"
@@ -303,7 +303,7 @@ export default function SubmissionByIdPage() {
                             <h3 className="text-lg font-semibold">
                                 Want to review this project?
                             </h3>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-zinc-700">
                                 Give feedback and rate this project.
                             </p>
                         </div>

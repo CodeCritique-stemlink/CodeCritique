@@ -39,7 +39,6 @@ export default function ReviewPage() {
                         headers: { Authorization: "Bearer " + token, },
                     }
                 );
-
                 const submissionData = await submissionRes.json();
                 if (!submissionRes.ok) {
                     throw new Error(
@@ -47,7 +46,6 @@ export default function ReviewPage() {
                         "Failed to load submission"
                     );
                 }
-
                 setSubmission(submissionData.data || submissionData);
 
                 // Load review criteria
@@ -56,7 +54,6 @@ export default function ReviewPage() {
                         headers: { Authorization: "Bearer " + token, },
                     }
                 );
-
                 const criteriaData = await criteriaRes.json();
 
                 if (!criteriaRes.ok) {
@@ -65,7 +62,6 @@ export default function ReviewPage() {
                         "Failed to load review criteria"
                     );
                 }
-
                 const criteriaList = criteriaData.data || criteriaData;
 
                 setCriteria(criteriaList);
@@ -93,7 +89,6 @@ export default function ReviewPage() {
         }
     },
         [isLoaded, isSignedIn, submissionId, getToken,]);
-
 
     const selectRating = (criteriaId: number, score: number) => {
         setRatings((previous) => ({
@@ -145,7 +140,7 @@ export default function ReviewPage() {
     if (!isLoaded || loading) {
         return (
             <div className="flex min-h-[80vh] items-center justify-center">
-                <p className="text-sm text-muted-foreground">Loading...</p>
+                <p className="text-sm text-zinc-700">Loading...</p>
             </div>
         );
     }
@@ -153,7 +148,7 @@ export default function ReviewPage() {
     if (!isSignedIn) {
         return (
             <div className="flex min-h-[80vh] items-center justify-center px-5">
-                <p className="text-sm text-muted-foreground">Please sign in to review this submission.</p>
+                <p className="text-sm text-zinc-700">Please sign in to review this submission.</p>
             </div>
         );
     }
@@ -170,9 +165,8 @@ export default function ReviewPage() {
         <div className="min-h-[80vh] bg-muted/40 px-5 py-10">
             <div className="mx-auto max-w-3xl">
 
-                <Button type="button" variant="ghost" size="sm" className="mb-5 px-0 text-muted-foreground hover:bg-transparent hover:text-foreground"
-                    onClick={() => router.push(`/submit/${submissionId}`)}
-                >
+                <Button type="button" variant="ghost" size="sm" className="mb-5 px-0 text-zinc-700 hover:bg-transparent hover:text-foreground"
+                    onClick={() => router.push(`/submit/${submissionId}`)}>
                     Back to submission
                 </Button>
 
@@ -181,7 +175,7 @@ export default function ReviewPage() {
                         <div className="flex items-start justify-between gap-5">
                             <div className="min-w-0">
                                 <h1 className="mb-2 text-2xl font-bold tracking-tight"> {submission.title}</h1>
-                                {submission.user && (<p className="text-sm text-muted-foreground">Submitted by{" "}
+                                {submission.user && (<p className="text-sm text-zinc-700">Submitted by{" "}
                                     <strong className="text-foreground">
                                         {submission.user.userName || `${submission.user.firstName || ""} ${submission.user.lastName || ""}`.trim()}
                                     </strong>
@@ -203,19 +197,17 @@ export default function ReviewPage() {
                             <h3 className="mb-2 text-sm font-semibold">
                                 Description
                             </h3>
-                            <p className="whitespace-pre-wrap text-sm leading-7 text-muted-foreground">
+                            <p className="whitespace-pre-wrap text-sm leading-7 text-zinc-700">
                                 {submission.description}
                             </p>
                         </div>
 
                         <div className="mt-5">
                             <h3 className="mb-2 text-sm font-semibold">GitHub Repository</h3>
-                            <a
-                                href={submission.githubUrl}
+                            <a href={submission.githubUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="break-all text-sm text-blue-600 hover:underline"
-                            >
+                                className="break-all text-sm text-blue-600 hover:underline" >
                                 {submission.githubUrl}
                             </a>
                         </div>
@@ -242,7 +234,7 @@ export default function ReviewPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-2xl">Write a Review</CardTitle>
-                        <p className="text-sm text-muted-foreground">Give feedback to help the developer improve their project.</p>
+                        <p className="text-sm text-zinc-700">Give feedback to help the developer improve their project.</p>
                     </CardHeader>
                     <CardContent>
 
@@ -259,42 +251,22 @@ export default function ReviewPage() {
                         </div>
 
                         <div className="mb-6 space-y-2">
-                            <Label htmlFor="improvements">
-                                Areas for Improvement
-                            </Label>
-
-                            <Textarea
-                                id="improvements"
-                                value={improvements}
-                                onChange={(e) => setImprovements(e.target.value)}
-                                placeholder="What could be improved?"
-                                rows={5}
-                                required
-                            />
+                            <Label htmlFor="improvements"> Areas for Improvement</Label>
+                            <Textarea id="improvements"value={improvements}onChange={(e) => setImprovements(e.target.value)}
+                             placeholder="What could be improved?"rows={5} required/>
                         </div>
 
                         <div className="mb-7 space-y-2">
                             <Label htmlFor="resources">Helpful Resources
                             </Label>
 
-                            <Textarea
-                                id="resources"
-                                value={resources}
-                                onChange={(e) =>
-                                    setResources(e.target.value)
-                                }
-                                placeholder="Share useful documentation, tutorials, or links..."
-                                rows={3}
-                            />
+                            <Textarea id="resources" value={resources} onChange={(e) => setResources(e.target.value)}
+                                placeholder="Share useful documentation, tutorials, or links..." rows={3}/>
                         </div>
                         <div className="border-t pt-7">
-                            <h3 className="mb-1.5 text-lg font-bold">
-                                Review Criteria
-                            </h3>
-
-                            <p className="mb-6 text-xs text-muted-foreground">
-                                Rate each criterion from 1 to 10.
-                            </p>
+                            <h3 className="mb-1.5 text-lg font-bold">Review Criteria </h3>
+                            <p className="mb-6 text-xs text-zinc-700">
+                                Rate each criterion from 1 to 10.</p>
 
                             {criteria.length === 0 ? (
                                 <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
@@ -303,55 +275,30 @@ export default function ReviewPage() {
                             ) : (
                                 <div className="space-y-4">
                                     {criteria.map((criterion) => (
-                                        <Card
-                                            key={criterion.id}
-                                            className="shadow-none"
-                                        >
+                                        <Card key={criterion.id}className="shadow-none">
                                             <CardContent className="p-4">
-                                                <p className="mb-1 text-sm font-semibold">
-                                                    {criterion.name}
-                                                </p>
-
-                                                <p className="mb-3 text-xs text-muted-foreground"> Select a score</p>
+                                                <p className="mb-1 text-sm font-semibold">{criterion.name}</p>
+                                                <p className="mb-3 text-xs text-zinc-700"> Select a score</p>
                                                 <div className="flex flex-wrap gap-2">
                                                     {Array.from({ length: 10 }, (_, index) => index + 1).map((score) => {
                                                         const selected =
                                                             ratings[criterion.id] === score;
 
                                                         return (
-                                                            <Button
-                                                                key={score}
-                                                                type="button"
-                                                                variant={
-                                                                    selected
-                                                                        ? "default"
-                                                                        : "outline"
-                                                                }
-                                                                size="icon"
-                                                                className="h-9 w-9 text-xs"
-                                                                onClick={() =>
-                                                                    selectRating(
-                                                                        criterion.id,
-                                                                        score
-                                                                    )
-                                                                }
-                                                            >
+                                                            <Button 
+                                                            key={score} type="button" variant={selected? "default" : "outline"}
+                                                                size="icon"className="h-9 w-9 text-xs"onClick={() =>
+                                                                    selectRating(criterion.id, score)
+                                                                }>
                                                                 {score}
                                                             </Button>
                                                         );
                                                     })}
                                                 </div>
-
-
                                                 {ratings[criterion.id] > 0 && (
-                                                    <p className="mt-3 text-xs text-muted-foreground">
+                                                    <p className="mt-3 text-xs text-zinc-700">
                                                         Selected:{" "}
-                                                        <strong className="text-foreground">
-                                                            {
-                                                                ratings[criterion.id]
-                                                            }
-                                                            /10
-                                                        </strong>
+                                                        <strong className="text-foreground">{ratings[criterion.id]}/10</strong>
                                                     </p>
                                                 )}
                                             </CardContent>
@@ -362,11 +309,8 @@ export default function ReviewPage() {
                         </div>
 
                         {error && (
-                            <div className="mt-5 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                                {error}
-                            </div>
+                            <div className="mt-5 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error} </div>
                         )}
-
                         {saved && (
                             <div className="mt-4 rounded-lg border border-green-200 bg-green-50 p-3 text-sm font-medium text-green-700">
                                 Review submitted successfully!
@@ -374,22 +318,11 @@ export default function ReviewPage() {
                         )}
 
                         <div className="mt-7 flex justify-end gap-2.5">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() =>
-                                    router.push(`/submit/${submissionId}`)
-                                }
+                            <Button type="button" variant="outline" onClick={() =>router.push(`/submit/${submissionId}`)}
                                 disabled={saving}>Cancel
                             </Button>
 
-                            <Button
-                                type="button"
-                                onClick={handleSubmit}
-                                disabled={
-                                    saving || criteria.length === 0
-                                }
-                            >
+                            <Button type="button" onClick={handleSubmit} disabled={saving || criteria.length === 0 }>
                                 {saving ? "Submitting..." : "Submit Review"}
                             </Button>
                         </div>
