@@ -9,38 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 
-type Tag = {
-    id: number;
-    name: string;
-};
-
-type Submission = {
-    id: number;
-    title: string;
-    description: string;
-    githubUrl: string;
-    status: string;
-    tags: Tag[];
-    user?: {
-        id: number;
-        firstName?: string;
-        lastName?: string;
-        userName?: string;
-        karmaPoints?: number;
-        profileImageUrl?: string;
-    };
-};
-
-type ReviewCriteria = {
-    id: number;
-    name: string;
-    submissionId: number;
-};
-
-type Rating = {
-    criteriaId: number;
-    score: number;
-};
+import type { Submission,ReviewCriteria} from "@/app/types";
 
 export default function ReviewPage() {
     const { getToken, isSignedIn, isLoaded } = useAuth();
