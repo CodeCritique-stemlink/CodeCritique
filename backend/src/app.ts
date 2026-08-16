@@ -9,10 +9,10 @@ const PORT = Number(process.env.PORT) || 4000;
 
 app.use(express.json());
 
-app.use(cors({
-origin: "http://localhost:3000",
-credentials: true,
-}));
+// app.use(cors({
+// origin: "http://localhost:3000",
+// credentials: true,
+// }));
 // app.use(cors({
 //   origin: (origin, callback) => {
   
@@ -24,6 +24,17 @@ credentials: true,
 //   },
 //   credentials: true,
 // }));
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || origin.startsWith("http://localhost:") || origin.endsWith(".vercel.app") || origin.endsWith(".railway.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS")); 
+    }
+  },
+  credentials: true,
+}));
 
 
 app.use(clerkMiddleware({}));
