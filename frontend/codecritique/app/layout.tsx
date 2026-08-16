@@ -8,6 +8,8 @@ import {
   Show,
   UserButton,
 } from "@clerk/nextjs";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,18 +38,34 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
         <body className="min-h-full flex flex-col">
-          <header className="flex justify-between items-center p-4 border-b">
-            <span className="font-semibold">CodeCritic</span>
+          <nav className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white">
+            <span className="font-semibold text-blue-600">CodeCritic</span>
             <div className="flex items-center gap-4">
+              <Show when="signed-in">
+                <div className="flex items-center gap-5">
+                <Link href="/" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition animate-fade-in">
+                  Home
+                </Link>
+                <Link href="/dashboard" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition animate-fade-in">
+                  Dashboard
+                </Link>
+                <Link href="/profile" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition animate-fade-in">
+                  Tech Stack
+                </Link>
+                <Link href="/submit" className="border border-gray-200 inline-flex items-center gap-2 bg-black text-white font-bold  px-3 py-1.5 rounded-md hover:text-bg-900 dark:hover:bg-zinc-100 transition">
+                  Post a Review Request <Plus className="w-4 h-4" />
+                </Link>
+                </div>
+              </Show>
               <Show when="signed-out">
-                <SignInButton />
-                <SignUpButton />
+                <SignInButton mode="modal"><button className="text-sm font-medium px-3 py-1.5 rounded-md border border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-500 transition">Sign In</button></SignInButton>
+                <SignUpButton mode="modal"><button className="text-sm font-medium px-3 py-1.5 rounded-md bg-black text-white border border-gray-800 hover:bg-gray-500 dark:hover:bg-gray-100 transition">Sign Up</button></SignUpButton>
               </Show>
               <Show when="signed-in">
                 <UserButton />
               </Show>
             </div>
-          </header>
+          </nav>
           {children}
         </body>
       </html>

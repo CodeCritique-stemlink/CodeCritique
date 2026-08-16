@@ -65,7 +65,6 @@ export default function ReviewPage() {
         const loadData = async () => {
             try {
                 const token = await getToken();
-
                 const submissionRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/submissions/${submissionId}`,
                     {
                         headers: { Authorization: "Bearer " + token, },
@@ -73,7 +72,6 @@ export default function ReviewPage() {
                 );
 
                 const submissionData = await submissionRes.json();
-
                 if (!submissionRes.ok) {
                     throw new Error(
                         submissionData.message ||
