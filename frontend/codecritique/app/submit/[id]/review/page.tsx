@@ -378,7 +378,7 @@ export default function ReviewPage() {
                                 type="button"
                                 variant="outline"
                                 onClick={() =>
-                                    router.push(`/submissions/${submissionId}`)
+                                    router.push(`/submit/${submissionId}`)
                                 }
                                 disabled={saving}>Cancel
                             </Button>
