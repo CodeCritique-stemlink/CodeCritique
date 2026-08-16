@@ -199,8 +199,7 @@ export default function Home() {
                   </span>
                   <div className="ml-auto flex items-center gap-4">
                     {isSignedIn && (<Link href={`submit/${submission.id}/review`}
-                      className="text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md transition"
-                    >
+                      className="text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md transition">
                       View Details
                     </Link>)}
 
