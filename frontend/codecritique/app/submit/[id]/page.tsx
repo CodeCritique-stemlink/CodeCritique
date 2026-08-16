@@ -27,7 +27,7 @@ export default function SubmissionByIdPage() {
             try {
                 const token = await getToken();
                 const submissionRes = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/submissions/${submissionId}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/submissions/${submissionId}`,
                     {
                         headers: {
                             Authorization: "Bearer " + token,
@@ -47,7 +47,7 @@ export default function SubmissionByIdPage() {
                 );
 
                 const crireriaRes = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/criterias/submission/${submissionId}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/criterias/submission/${submissionId}`,
                     {
                         headers: {
                             Authorization: "Bearer " + token,
@@ -67,7 +67,7 @@ export default function SubmissionByIdPage() {
                 );
 
                 const reviewRes = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/api/reviews/submission/${submissionId}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/reviews/submission/${submissionId}`,
                     {
                         headers: {
                             Authorization: "Bearer " + token,

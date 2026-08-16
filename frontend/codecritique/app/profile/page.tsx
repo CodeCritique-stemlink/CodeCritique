@@ -39,12 +39,12 @@ export default function ProfilePage() {
     const loadData = async () => {
       const token = await getToken();
 
-      const tagsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tags`);
+      const tagsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tags`);
       const tagsData = await tagsRes.json();
       setTags(tagsData.data);
 
       const profileRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
         {
           headers: { Authorization: "Bearer " + token },
         }
@@ -78,7 +78,7 @@ export default function ProfilePage() {
     const token = await getToken();
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
       {
         method: "PUT",
         headers: {

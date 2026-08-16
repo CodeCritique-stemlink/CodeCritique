@@ -50,7 +50,7 @@ export default function Home() {
     const loadSubmissions = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/submissions`
+          `${process.env.NEXT_PUBLIC_API_URL}/submissions`
         );
         const data = await res.json();
 
@@ -72,7 +72,7 @@ export default function Home() {
         // logged-in: fetch their tech stack and reorder
         const token = await getToken();
         const profileRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile`,
+          `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
           { headers: { Authorization: "Bearer " + token } }
         );
         const profileData = await profileRes.json();
@@ -198,7 +198,7 @@ export default function Home() {
                     {submission.user.karmaPoints} karma
                   </span>
                   <div className="ml-auto flex items-center gap-4">
-                    {isSignedIn && (<Link href={`submit/${submission.id}/review`}
+                    {isSignedIn && (<Link href={`submit/${submission.id}`}
                       className="text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md transition">
                       View Details
                     </Link>)}
