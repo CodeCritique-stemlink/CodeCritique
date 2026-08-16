@@ -34,7 +34,7 @@ export default function ReviewPage() {
         const loadData = async () => {
             try {
                 const token = await getToken();
-                const submissionRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/submissions/${submissionId}`,
+                const submissionRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/submissions/${submissionId}`,
                     {
                         headers: { Authorization: "Bearer " + token, },
                     }
@@ -51,7 +51,7 @@ export default function ReviewPage() {
                 setSubmission(submissionData.data || submissionData);
 
                 // Load review criteria
-                const criteriaRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/criterias/submission/${submissionId}`,
+                const criteriaRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/criterias/submission/${submissionId}`,
                     {
                         headers: { Authorization: "Bearer " + token, },
                     }
@@ -109,7 +109,7 @@ export default function ReviewPage() {
         try {
             const token = await getToken();
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/${submissionId}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/${submissionId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

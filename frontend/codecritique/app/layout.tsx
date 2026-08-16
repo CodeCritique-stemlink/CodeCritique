@@ -39,7 +39,7 @@ export default function RootLayout({
       >
         <body className="min-h-full flex flex-col">
           <nav className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white">
-            <span className="font-semibold text-blue-600">CodeCritic</span>
+            <span className="font-semibold text-2xl text-blue-600">CodeCritic</span>
             <div className="flex items-center gap-4">
               <Show when="signed-in">
                 <div className="flex items-center gap-5">
