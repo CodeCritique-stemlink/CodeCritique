@@ -66,7 +66,6 @@ export default function ReviewPage() {
             try {
                 const token = await getToken();
                 const submissionRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/submissions/${submissionId}`,
-                const submissionRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/submissions/${submissionId}`,
                     {
                         headers: { Authorization: "Bearer " + token, },
                     }
