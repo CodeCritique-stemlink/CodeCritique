@@ -107,8 +107,8 @@ export default function ReviewDetails() {
                 <Button type="button" variant="ghost" size="sm" className="mb-5 px-0 text-gray-700 hover:bg-transparent hover:text-gray-500" onClick={() =>
                     router.push(`/submit/${submissionId}`)
                 }>
-                    <ArrowLeft className="mr-2 h-4 w-4"/>
-                        Back to Submissions
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to Submissions
                 </Button>
 
                 <Card className="mb-6">
@@ -136,12 +136,12 @@ export default function ReviewDetails() {
                                         )}
                                 </div>
                             </div>
+                            {averageScore && (
+                                <Badge variant="secondary" className="px-3 py-1.5 text-sm font-semibold self-center">
+                                    {averageScore}/10
+                                </Badge>
+                            )}
                         </div>
-                        {averageScore && (
-                            <Badge variant="secondary" className="px-3 py-1.5 text-sm font-semibold self-center">
-                                {averageScore}/10
-                            </Badge>
-                        )}
                     </CardContent>
 
                 </Card>
