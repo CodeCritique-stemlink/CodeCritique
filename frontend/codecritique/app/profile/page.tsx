@@ -28,9 +28,10 @@ type Tag = { id: number; name: string };
 
 export default function ProfilePage() {
   const { getToken, isSignedIn, isLoaded } = useAuth();
-
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+  const [userName, setUserName] = useState("");
+  const [profileImageUrl, setProfileImageUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -54,6 +55,8 @@ export default function ProfilePage() {
         (t: Tag) => t.id
       );
       setSelectedTagIds(currentTagIds);
+      setUserName(profileData?.user?.userName || "");
+      setProfileImageUrl(profileData?.user?.profileImageUrl || "");
 
       setLoading(false);
     };
@@ -85,7 +88,11 @@ export default function ProfilePage() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
-        body: JSON.stringify({ interestedTagIds: selectedTagIds }),
+          body: JSON.stringify({
+          interestedTagIds: selectedTagIds,
+          userName,
+          profileImageUrl,
+        }),
       }
     );
 
@@ -107,7 +114,57 @@ export default function ProfilePage() {
  return (
     <div style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
       <div style={{ maxWidth: "560px", width: "100%", textAlign: "center" }}>
-        <h1 style={{ fontSize: "35px", fontWeight: 700, marginBottom: "10px" }}>Your Tech Stack</h1>
+        <h1 style={{ fontSize: "35px", fontWeight: 700, marginBottom: "10px" }}>Edit Profile</h1>
+
+        <div style={{ marginBottom: "20px", textAlign: "left" }}>
+          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+            Username
+          </label>
+          <input
+            type="text"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            placeholder="Your username"
+            style={{
+              width: "100%",
+              padding: "8px 12px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              fontSize: "14px",
+              boxSizing: "border-box",
+            }}
+          />
+        </div>
+
+        <div style={{ marginBottom: "20px", textAlign: "left" }}>
+          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
+            Profile Image URL
+          </label>
+          <input
+            type="text"
+            value={profileImageUrl}
+            onChange={(e) => setProfileImageUrl(e.target.value)}
+            placeholder="https://example.com/your-photo.jpg"
+            style={{
+              width: "100%",
+              padding: "8px 12px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              fontSize: "14px",
+              boxSizing: "border-box",
+              marginBottom: "10px",
+            }}
+          />
+          {profileImageUrl && (
+            <img
+              src={profileImageUrl}
+              alt="Profile preview"
+              style={{ width: "60px", height: "60px", borderRadius: "50%", objectFit: "cover" }}
+            />
+          )}
+        </div>
+
+        <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "10px" }}>Your Tech Stack</h2>
         <p style={{ color: "#666", marginBottom: "28px", fontSize: "14px", lineHeight: 1.6 }}>
           Pick the technologies you know. We use this to show you more relevant
           review requests on the homepage.
