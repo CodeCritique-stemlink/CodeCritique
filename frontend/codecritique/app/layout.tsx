@@ -53,7 +53,7 @@ export default function RootLayout({
                   Tech Stack
                 </Link>
                 <Link href="/submit" className="border border-gray-200 inline-flex items-center gap-2 bg-black text-white font-bold  px-3 py-1.5 rounded-md hover:text-bg-900 dark:hover:bg-zinc-100 transition">
-                  Post a Review Request <Plus className="w-4 h-4" />
+                  Post a Review Request
                 </Link>
                 </div>
               </Show>
