@@ -66,7 +66,7 @@ export default function ReviewDetails() {
 
     if (!isLoaded || loading) {
         return (
-            <div className="flex min-h-screen items-center justify-cente">
+            <div className="flex min-h-screen items-center justify-center">
                 <p className="text-sm text-gray-700">Loading Review...</p>
             </div>
         )
@@ -93,7 +93,7 @@ export default function ReviewDetails() {
         );
     }
     const reviewerName = review.reviewer?.userName ||
-        `${review.reviewer?.firstName || " "} ${review.reviewer?.lastName || " "}`.trim() || "Anonymous";
+        `${review.reviewer?.firstName || " "} ${review.reviewer?.lastName || " "} ${review.reviewer?.userName || " "}`.trim() || "Anonymous";
 
     const totalScore = review.ratings?.reduce((total, rating) => total + rating.score, 0) || 0;
 
@@ -170,7 +170,7 @@ export default function ReviewDetails() {
                     </CardContent>
                 </Card>
 
-                <Card className="mv-6">
+                <Card className="mb-6">
                     <CardHeader>
                         <CardTitle className="text-xl">Review Criteria</CardTitle>
                         <p className="text-sm text-gray-700">Scores given by the reviewer</p>
