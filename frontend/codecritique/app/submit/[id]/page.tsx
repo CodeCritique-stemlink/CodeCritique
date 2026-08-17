@@ -23,16 +23,23 @@ export default function SubmissionByIdPage() {
     const [error, setError] = useState("")
 
     useEffect(() => {
+
+        if (!isLoaded) {
+            return;
+        }
         const loadSubmission = async () => {
             try {
-                const token = await getToken();
+                // const token = await getToken();
+                setLoading(true);
+                setError("");
+
                 const submissionRes = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/submissions/${submissionId}`,
-                    {
-                        headers: {
-                            Authorization: "Bearer " + token,
-                        }
-                    }
+                    // {
+                    //     headers: {
+                    //         Authorization: "Bearer " + token,
+                    //     }
+                    // }
                 )
                 const submissionData = await submissionRes.json();
                 if (!submissionRes.ok) {
@@ -48,11 +55,11 @@ export default function SubmissionByIdPage() {
 
                 const crireriaRes = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/criterias/submission/${submissionId}`,
-                    {
-                        headers: {
-                            Authorization: "Bearer " + token,
-                        }
-                    }
+                    // {
+                    //     headers: {
+                    //         Authorization: "Bearer " + token,
+                    //     }
+                    // }
                 )
                 const criteriaData = await crireriaRes.json();
                 if (!crireriaRes.ok) {
@@ -66,25 +73,42 @@ export default function SubmissionByIdPage() {
                     criteriaData.data || criteriaData
                 );
 
+
+
                 const reviewRes = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/reviews/submission/${submissionId}`,
-                    {
-                        headers: {
-                            Authorization: "Bearer " + token,
-                        }
-                    }
+                    // {
+                    //     headers: {
+                    //         Authorization: "Bearer " + token,
+                    //     }
+                    // }
                 )
-                const reviewData = await reviewRes.json();
-                if (!reviewRes.ok) {
-                    throw new Error(
-                        reviewData.message ||
-                        "Failed to load submission"
-                    );
-                }
+                if (isSignedIn) {
+                    const token = await getToken();
 
-                setReviews(
-                    reviewData.data || reviewData
-                );
+                    const reviewRes = await fetch(
+                        `${process.env.NEXT_PUBLIC_API_URL}/reviews/submission/${submissionId}`,
+                        {
+                            headers: {
+                                Authorization: "Bearer " + token,
+                            }
+                        }
+                    );
+
+                    const reviewData = await reviewRes.json();
+                    if (!reviewRes.ok) {
+                        throw new Error(
+                            reviewData.message ||
+                            "Failed to load submission"
+                        );
+                    }
+
+                    setReviews(
+                        reviewData.data || reviewData
+                    );
+                } else {
+                    setReviews([])
+                }
             } catch (err) {
                 console.error(err);
 
@@ -97,9 +121,9 @@ export default function SubmissionByIdPage() {
                 setLoading(false);
             }
         }
-        if (isLoaded && isSignedIn) {
-            loadSubmission();
-        }
+
+        loadSubmission();
+
     }, [isLoaded, isSignedIn, submissionId, getToken]);
 
     if (!isLoaded || loading) {
@@ -109,14 +133,14 @@ export default function SubmissionByIdPage() {
             </div>
         )
     }
-    if (!isSignedIn) {
-        return (
-            <div className="mx-auto mt-15 max-w-2xl px-5 text-center">
-                <p className="text-sm text-red-700">{error || "Submission not found"}</p>
-                <Button className="mt-5" onClick={() => router.push("/")}>Back to home</Button>
-            </div>
-        )
-    }
+    // if (!isSignedIn) {
+    //     return (
+    //         <div className="mx-auto mt-15 max-w-2xl px-5 text-center">
+    //             <p className="text-sm text-red-700">{error || "Submission not found"}</p>
+    //             <Button className="mt-5" onClick={() => router.push("/")}>Back to home</Button>
+    //         </div>
+    //     )
+    // }
     if (!submission) {
         return (
             <div className="mx-auto mt-15 max-w-2xl px-5 text-center">
@@ -147,8 +171,8 @@ export default function SubmissionByIdPage() {
                             <Badge
                                 variant={submission?.status === "REVIEWED" ? "default" : "secondary"}
                                 className={submission?.status === "REVIEWED" ? "bg-green-100 text-green-800 hover:bg-green-100" : "bg-green-100 text-green-800 hover:bg-green-100:"}>
-                                    {submission.status === "REVIEWED" ? "Reviewed" : "Pending"}
-                                    </Badge>
+                                {submission.status === "REVIEWED" ? "Reviewed" : "Pending"}
+                            </Badge>
                         </div>
                     </CardHeader>
                     <CardContent>
@@ -221,100 +245,105 @@ export default function SubmissionByIdPage() {
                     </CardContent>
 
                 </Card>
-                <Card className="mb-6">
-                    <CardHeader>
-                        <CardTitle className="text-xl">Reviews</CardTitle>
-                        <p className="text-sm text-gray-700">See feedback from other developers who reviewed  this project.</p>
-                    </CardHeader>
-                    <CardContent>
-                        {Reviews.length === 0 ? (
-                            <div className="rounded-lg border border-dashed p-6 text-center">
-                                <p className="text-sm text-zinc-700">No reviews yet. </p>
-                                <p className="mt-1 text-xs text-gray-700">
-                                    Be the first person to review this project.
+                {isSignedIn && (
+                    <Card className="mb-6">
+                        <CardHeader>
+                            <CardTitle className="text-xl">Reviews</CardTitle>
+                            <p className="text-sm text-gray-700">See feedback from other developers who reviewed  this project.</p>
+                        </CardHeader>
+                        <CardContent>
+                            {Reviews.length === 0 ? (
+                                <div className="rounded-lg border border-dashed p-6 text-center">
+                                    <p className="text-sm text-zinc-700">No reviews yet. </p>
+                                    <p className="mt-1 text-xs text-gray-700">
+                                        Be the first person to review this project.
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {Reviews.map((review) => {
+                                        const reviewerName =
+                                            review.reviewer?.userName ||
+                                            `${review.reviewer?.firstName || ""} ${review.reviewer?.lastName || ""
+                                                }`.trim() ||
+                                            "Anonymous";
+
+                                        const totalScore = review.ratings?.reduce(
+                                            (total, rating) =>
+                                                total + rating.score, 0
+                                        ) || 0;
+
+                                        const ratingCount = review.ratings?.length || 0;
+                                        const averageScore = ratingCount > 0 ? (totalScore / ratingCount).toFixed(1) : null;
+                                        return (
+                                            <div
+                                                key={review.id}
+                                                className="rounded-xl border p-5 transition hover:bg-muted/40">
+                                                <div className="flex items-center justify-between gap-4">
+                                                    <button
+                                                        type="button" onClick={() =>
+                                                            router.push(`/submit/${submissionId}/review/${review.id}`)
+                                                        } className="flex items-center gap-3 text-left">
+                                                        {review.reviewer?.profileImageUrl ? (
+                                                            <img src={review.reviewer.profileImageUrl} alt={reviewerName} className="h-11 w-11 rounded-full object-cover" />
+                                                        ) : (
+                                                            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-muted text-sm font-semibold">
+                                                                {reviewerName.charAt(0).toUpperCase()}
+                                                            </div>
+                                                        )}
+                                                        <div>
+                                                            <p className="font-semibold hover:underline">{reviewerName} </p>
+                                                            {review.reviewer?.karmaPoints !== undefined &&
+                                                                (<p className="text-xs text-gray-700">{review.reviewer.karmaPoints}{" "}Karma Points</p>
+                                                                )}
+                                                        </div>
+                                                    </button>
+
+                                                    {averageScore && (
+                                                        <Badge variant="secondary" className="px-3 py-1" >
+                                                            {averageScore}/10
+                                                        </Badge>
+                                                    )}
+                                                </div>
+
+                                                {review.strengths && (
+                                                    <p className="mt-4 line-clamp-2 text-sm text-zinc-700"> {review.strengths}</p>
+                                                )}
+
+                                                <Button type="button" variant="outline" size="sm" className="mt-4"
+                                                    onClick={() => router.push(`/submit/${submissionId}/review/${review.id}`)}>
+                                                    View Review
+                                                </Button>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                )}
+
+                {isSignedIn && (
+
+                    <Card>
+                        <CardContent className="flex flex-col items-center justify-between gap-4 p-6 sm:flex-row">
+                            <div>
+                                <h3 className="text-lg font-semibold">
+                                    Want to review this project?
+                                </h3>
+                                <p className="text-sm text-zinc-700">
+                                    Give feedback and rate this project.
                                 </p>
                             </div>
-                        ) : (
-                            <div className="space-y-4">
-                                {Reviews.map((review) => {
-                                    const reviewerName =
-                                        review.reviewer?.userName ||
-                                        `${review.reviewer?.firstName || ""} ${review.reviewer?.lastName || ""
-                                            }`.trim() ||
-                                        "Anonymous";
 
-                                    const totalScore = review.ratings?.reduce(
-                                        (total, rating) =>
-                                            total + rating.score, 0
-                                    ) || 0;
-
-                                    const ratingCount = review.ratings?.length || 0;
-                                    const averageScore = ratingCount > 0 ? (totalScore / ratingCount).toFixed(1) : null;
-                                    return (
-                                        <div
-                                            key={review.id}
-                                            className="rounded-xl border p-5 transition hover:bg-muted/40">
-                                            <div className="flex items-center justify-between gap-4">
-                                                <button
-                                                    type="button" onClick={() =>
-                                                        router.push(`/submit/${submissionId}/review/${review.id}`)
-                                                    } className="flex items-center gap-3 text-left">
-                                                    {review.reviewer?.profileImageUrl ? (
-                                                        <img src={review.reviewer.profileImageUrl} alt={reviewerName} className="h-11 w-11 rounded-full object-cover" />
-                                                    ) : (
-                                                        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-muted text-sm font-semibold">
-                                                            {reviewerName.charAt(0).toUpperCase()}
-                                                        </div>
-                                                    )}
-                                                    <div>
-                                                        <p className="font-semibold hover:underline">{reviewerName} </p>
-                                                        {review.reviewer?.karmaPoints !== undefined &&
-                                                            (<p className="text-xs text-gray-700">{review.reviewer.karmaPoints}{" "}Karma Points</p>
-                                                            )}
-                                                    </div>
-                                                </button>
-
-                                                {averageScore && (
-                                                    <Badge variant="secondary" className="px-3 py-1" >
-                                                        {averageScore}/10
-                                                    </Badge>
-                                                )}
-                                            </div>
-
-                                            {review.strengths && (
-                                                <p className="mt-4 line-clamp-2 text-sm text-zinc-700"> {review.strengths}</p>
-                                            )}
-
-                                            <Button type="button" variant="outline" size="sm" className="mt-4"
-                                                onClick={() => router.push(`/submit/${submissionId}/review/${review.id}`)}>
-                                                View Review
-                                            </Button>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardContent className="flex flex-col items-center justify-between gap-4 p-6 sm:flex-row">
-                        <div>
-                            <h3 className="text-lg font-semibold">
-                                Want to review this project?
-                            </h3>
-                            <p className="text-sm text-zinc-700">
-                                Give feedback and rate this project.
-                            </p>
-                        </div>
-
-                        <Button
-                            size="lg" onClick={() =>
-                                router.push(`/submit/${submissionId}/review`)}>
-                            Write a Review
-                        </Button>
-                    </CardContent>
-                </Card>
+                            <Button
+                                size="lg" onClick={() =>
+                                    router.push(`/submit/${submissionId}/review`)}>
+                                Write a Review
+                            </Button>
+                        </CardContent>
+                    </Card>
+                )}
             </div>
         </div>
     )

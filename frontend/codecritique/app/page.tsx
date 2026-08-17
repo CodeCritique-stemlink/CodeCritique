@@ -123,7 +123,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col flex-1 bg-zinc-50 dark:bg-black">
-      <main className="flex-1 w-full p-6 max-w-7xl mx-auto">
+      <main className="flex-1 w-full px-4 py-6 max-w-7xl mx-auto sm:px-6">
         <div className="col-span-5 bg-zinc-50 dark:bg-black p-6">
           <div className="flex items-center gap-2 mb-4">
             <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
@@ -187,7 +187,7 @@ export default function Home() {
                   </div>
                 )}
 
-                <div className="flex items-center gap-3 mt-3">
+                <div className="flex flex-col gap-3 mt-3 sm:flex-row sm:items-center">
                   <span className="text-xs text-zinc-500">
                     by{" "}
                     {submission.user.userName ||
@@ -197,11 +197,11 @@ export default function Home() {
                   <span className="text-xs text-zinc-400">
                     {submission.user.karmaPoints} karma
                   </span>
-                  <div className="ml-auto flex items-center gap-4">
-                    {isSignedIn && (<Link href={`submit/${submission.id}`}
+                  <div className="flex items-center gap-3 sm:ml-auto">
+                    <Link href={`submit/${submission.id}`}
                       className="text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-md transition">
                       View Details
-                    </Link>)}
+                    </Link>
 
                     <a href={submission.githubUrl}
                       target="_blank"
