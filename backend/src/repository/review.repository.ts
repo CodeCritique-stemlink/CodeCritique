@@ -82,6 +82,14 @@ export class ReviewRepository {
   async findById(id: number): Promise<any | null> {
     return await prisma.review.findUnique({
       where: { id },
+      include:{
+        reviewer:true,
+        ratings:{
+          include:{
+            criteria:true
+          }
+        }
+      }
     });
   }
 

@@ -3,7 +3,7 @@ import { ReviewRepository } from "../repository/review.repository.js";
 import { SubmissionRepository } from "../repository/submission.repository.js";
 
 const reviewRepository = new ReviewRepository();
-const subbmissionRepository = new SubmissionRepository();
+const submissionRepository = new SubmissionRepository();
 
 export class ReviewService {
   async createReview(
@@ -11,12 +11,12 @@ export class ReviewService {
     submissionId: number,
     data: CreateReviewInputs,
   ) {
-    const submission = await subbmissionRepository.findById(submissionId);
+    const submission = await submissionRepository.findById(submissionId);
     if (!submission) {
       throw new Error("Submission not found!");
     }
-    if(submission.userId===reviewerId){
-      throw new Error("Cannot review your own submission")
+    if (submission.userId === reviewerId) {
+      throw new Error("You cannot review your own submission");
     }
     return await reviewRepository.createWithKarma(
       reviewerId,
@@ -32,7 +32,7 @@ export class ReviewService {
     return review
   }
   async getBySubmissionId(submissionId: number) {
-    const submission = await subbmissionRepository.findById(submissionId);
+    const submission = await submissionRepository.findById(submissionId);
     if (!submission) {
       throw new Error("Submission not found!");
     }
