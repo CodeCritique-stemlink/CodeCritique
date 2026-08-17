@@ -43,7 +43,7 @@ export default function SubmitPage() {
 
   useEffect(() => {
   const loadTags = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tags`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tags`);
     const data = await res.json();
     setTags(data.data);
   };
@@ -98,7 +98,7 @@ export default function SubmitPage() {
 
     const token = await getToken();
 
-    const res1 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/submissions`, {
+    const res1 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/submissions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export default function SubmitPage() {
 
     const submissionId = data1.data.id;
 
-    const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/criterias`, {
+    const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/criterias`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
