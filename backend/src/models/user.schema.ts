@@ -2,6 +2,8 @@ import z from "zod";
 
 export const updateUserSchema = z.object({
   body: z.object({
+    firstName: z.string().trim().max(50).optional(),
+    lastName: z.string().trim().max(50).optional(),
     userName: z
       .string()
       .min(2, "Username must be at least 2 characters long.")
