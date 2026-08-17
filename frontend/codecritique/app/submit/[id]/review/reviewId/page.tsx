@@ -59,8 +59,9 @@ export default function ReviewDetails() {
             finally {
                 setLoading(false);
             }
-            loadReview();
         }
+        loadReview();
+
     }, [isLoaded, isSignedIn, reviewId, getToken]);
 
     if (!isLoaded || loading) {
@@ -106,42 +107,44 @@ export default function ReviewDetails() {
                 <Button type="button" variant="ghost" size="sm" className="mb-5 px-0 text-gray-700 hover:bg-transparent hover:text-gray-500" onClick={() =>
                     router.push(`/submit/${submissionId}`)
                 }>
+                    <ArrowLeft className="mr-2 h-4 w-4">
+                        Back to Submissions
+                    </ArrowLeft>
                 </Button>
-                <ArrowLeft className="mr-2 h-4 w-4">
-                    Back to Submissions
-                </ArrowLeft>
+
                 <Card className="mb-6">
                     <CardHeader>
                         <CardTitle className="text-2xl">
                             Review Details
                         </CardTitle>
-                        <CardContent>
-                            <div className="flex items-center justify-between gap-4">
-                                <div className="flex items-center gap-4">
-                                    {review.reviewer?.profileImageUrl ? (
-                                        <img src={review.reviewer.profileImageUrl} alt={reviewerName} className="h-14 w-14 rounded-full object-cover" />
-                                    ) : (
-                                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted text-lg font-semibold">
-                                            {reviewerName.charAt(0).toUpperCase()}
-                                        </div>
-                                    )}
-                                    <div>
-                                        <p className="text-lg font-semibold"> {reviewerName}</p>
-                                        {review.reviewer?.karmaPoints !==
-                                            undefined && (
-                                                <p className="text-sm text-gray-600">
-                                                    {review.reviewer.karmaPoints}{" "} Karma Points </p>
-                                            )}
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-4">
+                                {review.reviewer?.profileImageUrl ? (
+                                    <img src={review.reviewer.profileImageUrl} alt={reviewerName} className="h-14 w-14 rounded-full object-cover" />
+                                ) : (
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted text-lg font-semibold">
+                                        {reviewerName.charAt(0).toUpperCase()}
                                     </div>
+                                )}
+                                <div>
+                                    <p className="text-lg font-semibold"> {reviewerName}</p>
+                                    {review.reviewer?.karmaPoints !==
+                                        undefined && (
+                                            <p className="text-sm text-gray-600">
+                                                {review.reviewer.karmaPoints}{" "} Karma Points </p>
+                                        )}
                                 </div>
                             </div>
-                            {averageScore && (
-                                <Badge variant="secondary" className="px-3 py-2 text-sm">
-                                    {averageScore}/10
-                                </Badge>
-                            )}
-                        </CardContent>
-                    </CardHeader>
+                        </div>
+                        {averageScore && (
+                            <Badge variant="secondary" className="px-3 py-2 text-sm">
+                                {averageScore}/10
+                            </Badge>
+                        )}
+                    </CardContent>
+
                 </Card>
 
                 <Card className="mb-6">
@@ -157,12 +160,12 @@ export default function ReviewDetails() {
                         <div>
                             <h3 className="mb-2 text-sm font-semibold"> Areas for Improvement</h3>
                             <p className="whitespace-pre-line text-sm text-zinc-700">
-                                {review.improvements ||"No improvements provided."}</p>
+                                {review.improvements || "No improvements provided."}</p>
                         </div>
                         <div>
                             <h3 className="mb-2 text-sm font-semibold"> Helpful Resources </h3>
                             <p className="whitespace-pre-line text-sm text-zinc-700">
-                                {review.resources ||"No resources provided."}</p>
+                                {review.resources || "No resources provided."}</p>
                         </div>
                     </CardContent>
                 </Card>
@@ -172,18 +175,18 @@ export default function ReviewDetails() {
                         <CardTitle className="text-xl">Review Criteria</CardTitle>
                         <p className="text-sm text-gray-700">Scores given by the reviewer</p>
                     </CardHeader>
-                    <CardContent>{review.ratings &&review.ratings.length > 0 ? (
-                            <div className="space-y-3">
-                                {review.ratings.map((rating) => (
-                                    <div key={rating.id}className="flex items-center justify-between rounded-lg border p-4" >
-                                        <p className="text-sm font-medium">{rating.criteria?.name ||"Criterion"}</p>
-                                        <Badge variant="secondary">{rating.score}/10</Badge>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-sm text-zinc-600">No ratings available. </p>
-                        )}
+                    <CardContent>{review.ratings && review.ratings.length > 0 ? (
+                        <div className="space-y-3">
+                            {review.ratings.map((rating) => (
+                                <div key={rating.id} className="flex items-center justify-between rounded-lg border p-4" >
+                                    <p className="text-sm font-medium">{rating.criteria?.name || "Criterion"}</p>
+                                    <Badge variant="secondary">{rating.score}/10</Badge>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-sm text-zinc-600">No ratings available. </p>
+                    )}
                     </CardContent>
                 </Card>
             </div>
