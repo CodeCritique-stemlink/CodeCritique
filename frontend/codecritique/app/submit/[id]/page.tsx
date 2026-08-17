@@ -29,17 +29,11 @@ export default function SubmissionByIdPage() {
         }
         const loadSubmission = async () => {
             try {
-                // const token = await getToken();
                 setLoading(true);
                 setError("");
 
                 const submissionRes = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/submissions/${submissionId}`,
-                    // {
-                    //     headers: {
-                    //         Authorization: "Bearer " + token,
-                    //     }
-                    // }
                 )
                 const submissionData = await submissionRes.json();
                 if (!submissionRes.ok) {
@@ -55,11 +49,6 @@ export default function SubmissionByIdPage() {
 
                 const crireriaRes = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/criterias/submission/${submissionId}`,
-                    // {
-                    //     headers: {
-                    //         Authorization: "Bearer " + token,
-                    //     }
-                    // }
                 )
                 const criteriaData = await crireriaRes.json();
                 if (!crireriaRes.ok) {
@@ -73,16 +62,6 @@ export default function SubmissionByIdPage() {
                     criteriaData.data || criteriaData
                 );
 
-
-
-                const reviewRes = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/reviews/submission/${submissionId}`,
-                    // {
-                    //     headers: {
-                    //         Authorization: "Bearer " + token,
-                    //     }
-                    // }
-                )
                 if (isSignedIn) {
                     const token = await getToken();
 
@@ -133,14 +112,7 @@ export default function SubmissionByIdPage() {
             </div>
         )
     }
-    // if (!isSignedIn) {
-    //     return (
-    //         <div className="mx-auto mt-15 max-w-2xl px-5 text-center">
-    //             <p className="text-sm text-red-700">{error || "Submission not found"}</p>
-    //             <Button className="mt-5" onClick={() => router.push("/")}>Back to home</Button>
-    //         </div>
-    //     )
-    // }
+
     if (!submission) {
         return (
             <div className="mx-auto mt-15 max-w-2xl px-5 text-center">
