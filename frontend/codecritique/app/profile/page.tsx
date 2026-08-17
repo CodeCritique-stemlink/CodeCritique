@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const TAG_COLORS: Record<string, string> = {
   javascript: "#F7DF1E",
@@ -26,23 +27,25 @@ function getTextColor(hex: string) {
 
 type Tag = { id: number; name: string };
 
+type Profile = {
+  firstName?: string;
+  lastName?: string;
+  userName?: string;
+  profileImageUrl?: string;
+  karmaPoints?: number;
+  interestedTags?: Tag[];
+};
+
 export default function ProfilePage() {
   const { getToken, isSignedIn, isLoaded } = useAuth();
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
-  const [userName, setUserName] = useState("");
-  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const router = useRouter();
+
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
       const token = await getToken();
-
-      const tagsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tags`);
-      const tagsData = await tagsRes.json();
-      setTags(tagsData.data);
 
       const profileRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
@@ -51,13 +54,7 @@ export default function ProfilePage() {
         }
       );
       const profileData = await profileRes.json();
-      const currentTagIds = (profileData?.user?.interestedTags || []).map(
-        (t: Tag) => t.id
-      );
-      setSelectedTagIds(currentTagIds);
-      setUserName(profileData?.user?.userName || "");
-      setProfileImageUrl(profileData?.user?.profileImageUrl || "");
-
+      setProfile(profileData?.user || null);
       setLoading(false);
     };
 
@@ -66,143 +63,114 @@ export default function ProfilePage() {
     }
   }, [isLoaded, isSignedIn]);
 
-  const toggleTag = (tagId: number) => {
-    if (selectedTagIds.includes(tagId)) {
-      setSelectedTagIds(selectedTagIds.filter((id) => id !== tagId));
-    } else {
-      setSelectedTagIds([...selectedTagIds, tagId]);
-    }
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
-    setSaved(false);
-
-    const token = await getToken();
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/profile`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-          body: JSON.stringify({
-          interestedTagIds: selectedTagIds,
-          userName,
-          profileImageUrl,
-        }),
-      }
-    );
-
-    if (res.ok) {
-      setSaved(true);
-    }
-
-    setSaving(false);
-  };
-
   if (!isLoaded || loading) {
     return <p style={{ padding: "20px" }}>Loading...</p>;
   }
 
   if (!isSignedIn) {
-    return <p style={{ padding: "20px" }}>Please sign in to edit your profile</p>;
+    return <p style={{ padding: "20px" }}>Please sign in to view your profile</p>;
   }
 
- return (
-    <div style={{ minHeight: "80vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
-      <div style={{ maxWidth: "560px", width: "100%", textAlign: "center" }}>
-        <h1 style={{ fontSize: "35px", fontWeight: 700, marginBottom: "10px" }}>Edit Profile</h1>
+  const displayName =
+    [profile?.firstName, profile?.lastName].filter(Boolean).join(" ") ||
+    profile?.userName ||
+    "Your Profile";
 
-        <div style={{ marginBottom: "20px", textAlign: "left" }}>
-          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
-            Username
-          </label>
-          <input
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder="Your username"
+  return (
+    <div
+      style={{
+        minHeight: "80vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "480px",
+          width: "100%",
+          border: "1px solid #ddd",
+          borderRadius: "12px",
+          padding: "32px",
+          textAlign: "center",
+        }}
+      >
+        {profile?.profileImageUrl ? (
+          <img
+            src={profile.profileImageUrl}
+            alt="Profile"
             style={{
-              width: "100%",
-              padding: "8px 12px",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              fontSize: "14px",
-              boxSizing: "border-box",
+              width: "88px",
+              height: "88px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              marginBottom: "16px",
             }}
           />
-        </div>
-
-        <div style={{ marginBottom: "20px", textAlign: "left" }}>
-          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
-            Profile Image URL
-          </label>
-          <input
-            type="text"
-            value={profileImageUrl}
-            onChange={(e) => setProfileImageUrl(e.target.value)}
-            placeholder="https://example.com/your-photo.jpg"
+        ) : (
+          <div
             style={{
-              width: "100%",
-              padding: "8px 12px",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              fontSize: "14px",
-              boxSizing: "border-box",
-              marginBottom: "10px",
+              width: "88px",
+              height: "88px",
+              borderRadius: "50%",
+              background: "#e5e7eb",
+              margin: "0 auto 16px",
             }}
           />
-          {profileImageUrl && (
-            <img
-              src={profileImageUrl}
-              alt="Profile preview"
-              style={{ width: "60px", height: "60px", borderRadius: "50%", objectFit: "cover" }}
-            />
+        )}
+
+        <h1 style={{ fontSize: "24px", fontWeight: 700, marginBottom: "4px" }}>
+          {displayName}
+        </h1>
+        {profile?.userName && (
+          <p style={{ color: "#666", marginBottom: "4px" }}>@{profile.userName}</p>
+        )}
+        {typeof profile?.karmaPoints === "number" && (
+          <p style={{ color: "#888", fontSize: "13px", marginBottom: "20px" }}>
+            {profile.karmaPoints} Karma Points
+          </p>
+        )}
+
+        <h2 style={{ fontSize: "15px", fontWeight: 600, marginBottom: "10px" }}>
+          Tech Stack
+        </h2>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "8px",
+            justifyContent: "center",
+            marginBottom: "24px",
+          }}
+        >
+          {profile?.interestedTags?.length ? (
+            profile.interestedTags.map((tag) => {
+              const color = TAG_COLORS[tag.name] || "#6B7280";
+              const textColor = getTextColor(color);
+              return (
+                <span
+                  key={tag.id}
+                  style={{
+                    backgroundColor: color,
+                    color: textColor,
+                    borderRadius: "999px",
+                    padding: "5px 12px",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                  }}
+                >
+                  {tag.name}
+                </span>
+              );
+            })
+          ) : (
+            <p style={{ color: "#999", fontSize: "13px" }}>No tags selected yet</p>
           )}
         </div>
 
-        <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "10px" }}>Your Tech Stack</h2>
-        <p style={{ color: "#666", marginBottom: "28px", fontSize: "14px", lineHeight: 1.6 }}>
-          Pick the technologies you know. We use this to show you more relevant
-          review requests on the homepage.
-        </p>
-
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center", marginBottom: "28px" }}>
-        {tags.map((tag) => {
-          const color = TAG_COLORS[tag.name] || "#6B7280";
-          const textColor = getTextColor(color);
-          const isSelected = selectedTagIds.includes(tag.id);
-          return (
-            <button
-              key={tag.id}
-              type="button"
-              onClick={() => toggleTag(tag.id)}
-              style={{
-                backgroundColor: color,
-                color: textColor,
-                borderColor: isSelected ? "#16A34A" : "transparent",
-                borderWidth: "3px",
-                borderStyle: "solid",
-                borderRadius: "999px",
-                padding: "6px 14px",
-                fontSize: "13px",
-                fontWeight: 600,
-                opacity: isSelected ? 1 : 0.8,
-                cursor: "pointer",
-              }}
-            >
-              {tag.name}
-            </button>
-          );
-        })}
-      </div>
-
-      <button
-          onClick={handleSave}
-          disabled={saving}
+        <button
+          onClick={() => router.push("/profile/edit")}
           style={{
             background: "black",
             color: "white",
@@ -214,14 +182,8 @@ export default function ProfilePage() {
             fontWeight: 600,
           }}
         >
-          {saving ? "Saving..." : "Save Tech Stack"}
+          Edit Profile
         </button>
-
-        {saved && (
-          <p style={{ color: "#16A34A", marginTop: "14px", fontSize: "14px", fontWeight: 500 }}>
-            Saved! Go back to the homepage to see your personalized feed.
-          </p>
-        )}
       </div>
     </div>
   );
