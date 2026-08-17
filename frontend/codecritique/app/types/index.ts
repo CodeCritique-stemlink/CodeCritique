@@ -51,3 +51,4 @@ export type Review = {
     profileImageUrl?: string;
   };
 };
+
