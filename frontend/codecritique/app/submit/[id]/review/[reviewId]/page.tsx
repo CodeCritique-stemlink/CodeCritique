@@ -138,7 +138,7 @@ export default function ReviewDetails() {
                             </div>
                         </div>
                         {averageScore && (
-                            <Badge variant="secondary" className="shrink-0 px-3 py-2 text-sm">
+                            <Badge variant="secondary" className="px-3 py-1.5 text-sm font-semibold self-center">
                                 {averageScore}/10
                             </Badge>
                         )}
