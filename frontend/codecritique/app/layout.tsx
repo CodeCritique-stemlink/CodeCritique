@@ -40,7 +40,7 @@ export default function RootLayout({
         <body className="min-h-full flex flex-col">
           <nav className="sticky top-0 z-50 flex justify-between items-center px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-white">
             <span className="font-semibold text-2xl text-blue-600">CodeCritic</span>
-            <div className="hidden md:flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <Show when="signed-in">
                 <div className="flex items-center gap-5">
                 <Link href="/" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition animate-fade-in">
