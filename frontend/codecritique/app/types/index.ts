@@ -27,8 +27,14 @@ export type ReviewCriteria = {
 };
 
 export type ReviewRating = {
+  id: number;
   criteriaId: number;
   score: number;
+    criteria: {
+      id: number;
+      name:string;
+    }
+  
 };
 
 export type Review = {
