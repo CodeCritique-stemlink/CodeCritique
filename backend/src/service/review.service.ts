@@ -15,6 +15,9 @@ export class ReviewService {
     if (!submission) {
       throw new Error("Submission not found!");
     }
+    if(submission.userId===reviewerId){
+      throw new Error("Cannot review your own submission")
+    }
     return await reviewRepository.createWithKarma(
       reviewerId,
       submissionId,
