@@ -10,7 +10,7 @@ const controller = new ReviewCriteriaController();
 reviewCriteriaRouter.post( "/", requireAuth, validate(createReviewCriteriaSchema), controller.create );
 reviewCriteriaRouter.get( "/:id", validate(reviewCriteriaIdSchema),controller.findById);
 reviewCriteriaRouter.put( "/:id", requireAuth, validate(updateReviewCriteriaSchema), controller.update );
-reviewCriteriaRouter.get( "/submission/:submissionId", requireAuth,validate(reviewCriteriaBySubmissionIdSchema) ,controller.findBySubmissionId );
+reviewCriteriaRouter.get( "/submission/:submissionId",validate(reviewCriteriaBySubmissionIdSchema) ,controller.findBySubmissionId );
 reviewCriteriaRouter.delete("/:id", requireAuth,validate(deleteReviewCriteriaSchema), controller.delete);
 
 export default reviewCriteriaRouter
