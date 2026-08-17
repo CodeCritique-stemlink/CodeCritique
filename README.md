@@ -46,7 +46,7 @@ CodeCritique/
         └── lib/              # Shared frontend utilities
 ```
 
-## Prerequisites
+## Pre-requisites
 
 * Node.js 20+
 * npm 10+
