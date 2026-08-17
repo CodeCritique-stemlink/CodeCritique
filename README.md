@@ -110,15 +110,13 @@ Request bodies and query params are validated with Zod (see `backend/src/models`
 
 Core entities, defined in `backend/prisma/schema.prisma`:
 
-* **User** — has Karma points, submissions, reviews, and followed tags
-* **Submission** — a project posted for review (title, description, GitHub URL, status, tags)
-* **Review** — feedback on a submission (strengths, improvements, resources, ratings)
-* **ReviewCriteria** — custom, per-submission criteria that reviews are scored against
-* **Rating** — a score tied to a specific review and criteria
-* **Tag** — shared between submissions and users' interests
+* **User** - has Karma points, submissions, reviews, and followed tags
+* **Submission** - a project posted for review (title, description, GitHub URL, status, tags)
+* **Review** - feedback on a submission (strengths, improvements, resources, ratings)
+* **ReviewCriteria** - custom, per-submission criteria that reviews are scored against
+* **Rating** - a score tied to a specific review and criteria
+* **Tag** - shared between submissions and users' interests
 
 ## Demo
 -----
-<!-- or a YouTube link: [![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID) -->
-
-_Demo video coming soon._
+Up next
