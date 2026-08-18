@@ -1,6 +1,7 @@
 import type { CreateReviewInputs } from "../models/review.schema.js";
 import { ReviewRepository } from "../repository/review.repository.js";
 import { SubmissionRepository } from "../repository/submission.repository.js";
+import { NotFoundError, ForbiddenError } from "../errors/appError.js";
 
 const reviewRepository = new ReviewRepository();
 const submissionRepository = new SubmissionRepository();
@@ -13,10 +14,10 @@ export class ReviewService {
   ) {
     const submission = await submissionRepository.findById(submissionId);
     if (!submission) {
-      throw new Error("Submission not found!");
+      throw new NotFoundError("Submission not found!");
     }
     if (submission.userId === reviewerId) {
-      throw new Error("You cannot review your own submission");
+      throw new ForbiddenError("You cannot review your own submission");
     }
     return await reviewRepository.createWithKarma(
       reviewerId,
@@ -27,14 +28,14 @@ export class ReviewService {
   async findReviewById(id: number) {
     const review = await reviewRepository.findById(id);
     if (!review) {
-      throw new Error("Review not found!");
+      throw new NotFoundError("Review not found!");
     }
     return review
   }
   async getBySubmissionId(submissionId: number) {
     const submission = await submissionRepository.findById(submissionId);
     if (!submission) {
-      throw new Error("Submission not found!");
+      throw new NotFoundError("Submission not found!");
     }
     return await reviewRepository.getBySubmission(submissionId);
   }
@@ -44,10 +45,10 @@ export class ReviewService {
   async deleteReview(id:number,userId:number){
        const review = await reviewRepository.findById(id);
     if (!review) {
-      throw new Error("Comment not found");
+      throw new NotFoundError("Comment not found");
     }
     if (review.reviewerId !== userId) {
-      throw new Error("You are not authorized to delete this comment");
+      throw new ForbiddenError("You are not authorized to delete this comment");
     }
     return await reviewRepository.deleteReview(id);
   }

@@ -1,3 +1,4 @@
+import { NotFoundError } from "../errors/appError.js";
 import { TagRepository } from "../repository/tags.repository.js";
 
 const tagRepository = new TagRepository();
@@ -14,7 +15,7 @@ export class TagService {
   async getTagById(id: number) {
     const tag = await tagRepository.findById(id);
     if (!tag) {
-      throw new Error("Tag not found");
+      throw new NotFoundError("Tag not found");
     }
     return tag;
   }
@@ -22,7 +23,7 @@ export class TagService {
   async updateTag(id: number, name: string) {
     const tag = await tagRepository.findById(id);
     if (!tag) {
-      throw new Error("Tag not found");
+      throw new NotFoundError("Tag not found");
     }
     return await tagRepository.update(id, name);
   }
@@ -30,7 +31,7 @@ export class TagService {
   async deleteTag(id: number) {
     const tag = await tagRepository.findById(id);
     if (!tag) {
-      throw new Error("Tag not found");
+      throw new NotFoundError("Tag not found");
     }
     return await tagRepository.delete(id);
   }

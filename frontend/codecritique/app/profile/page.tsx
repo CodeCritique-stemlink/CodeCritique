@@ -15,6 +15,10 @@ const TAG_COLORS: Record<string, string> = {
   "c++": "#6c0b74",
   go: "#00A8C6",
   sql: "#D97706",
+  HTML: "#E34F26",
+  CSS: "#1572B6",
+  TailwindCSS: "#38BDF8",
+  MongoDB: "#47A248" 
 };
 
 function getTextColor(hex: string) {

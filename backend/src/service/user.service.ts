@@ -3,6 +3,7 @@ import { createClerkClient } from "@clerk/express";
 import { UserRepository } from "../repository/user.repository.js";
 import type { User } from "../generated/prisma/client.js";
 import type { UpdateUserInput } from "../models/user.schema.js";
+import { BadRequestError, NotFoundError } from "../errors/appError.js";
 
 const clerkClient = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY || "",
@@ -21,7 +22,7 @@ export class UserService {
       const email = clerkUser.emailAddresses[0]?.emailAddress;
 
       if (!email) {
-        throw new Error("Clerk user account profiles must maintain a valid primary email address.");
+        throw new BadRequestError("Clerk user account profiles must maintain a valid primary email address.");
       }
 
       const userData: any = {
@@ -41,7 +42,7 @@ export class UserService {
      const user = await userRepository.findById(userId);
 
      if(!user){
-      throw new Error("Not Found")
+      throw new NotFoundError("Not Found")
      }
      return user
   }
@@ -50,7 +51,7 @@ export class UserService {
      const user = await userRepository.findById(userId);
 
      if(!user){
-      throw new Error("Not Found")
+      throw new NotFoundError("Not Found")
      }
      return user
   }
@@ -58,7 +59,7 @@ export class UserService {
     const userByName = await userRepository.findByUserName(userName);
 
     if(!userByName){
-      throw new Error("User Not Found")
+      throw new NotFoundError("User Not Found")
     }
     return userByName
   }
@@ -67,7 +68,7 @@ export class UserService {
     const updatedUser  = await userRepository.findById(userId);
 
     if(!updatedUser ){
-      throw new Error("User Not Found")
+      throw new NotFoundError("User Not Found")
     } 
     return await userRepository.updateUser(userId,data)
   }
@@ -76,7 +77,7 @@ export class UserService {
     const user = await userRepository.findById(userId);
 
     if(!user){
-      throw new Error("User not found")
+      throw new NotFoundError("User not found")
     }
     return await userRepository.deleteUser(userId)
 
