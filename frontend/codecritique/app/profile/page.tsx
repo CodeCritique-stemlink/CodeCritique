@@ -35,7 +35,6 @@ type Profile = {
   firstName?: string;
   lastName?: string;
   userName?: string;
-  bio?: string;
   profileImageUrl?: string;
   karmaPoints?: number;
   interestedTags?: Tag[];
@@ -138,13 +137,6 @@ export default function ProfilePage() {
             {profile.karmaPoints} Karma Points
           </p>
         )}
-
-        {profile?.bio && (
-          <p style={{ color: "#444", fontSize: "14px", marginBottom: "20px", lineHeight: 1.5 }}>
-            {profile.bio}
-          </p>
-        )}
-
 
         <h2 style={{ fontSize: "15px", fontWeight: 600, marginBottom: "10px" }}>
           Tech Stack
