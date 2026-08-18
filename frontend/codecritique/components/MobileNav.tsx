@@ -41,7 +41,7 @@ export default function MobileNav() {
                             </Link>
 
                         </Show>
-                        <Link href="/submit" className="border border-gray-200 inline-flex items-center gap-2 bg-black text-white font-medium px-3 py-1.5 rounded-md hover:text-bg-500 dark:hover:bg-gray-100 transition">
+                        <Link href="/submit" className="w-full flex items-center justify-center bg-black text-white font-medium px-3 py-2 rounded-md border border-gray-200 text-center hover:bg-gray-800 transition">
                             Post a Review Request
                         </Link>
                         <Show when="signed-out">
