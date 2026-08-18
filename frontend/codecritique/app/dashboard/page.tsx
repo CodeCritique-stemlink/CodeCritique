@@ -273,7 +273,7 @@ export default function DashboardPage() {
             {mySubmissions.map((sub) => (
               <Card key={sub.id} className="relative shadow-none">
                 <CardContent className="flex items-center justify-between gap-4 p-4">
-                  <div className="absolute top-3 right-3 flex gap-1">
+                  <div className="flex gap-1">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -284,7 +284,7 @@ export default function DashboardPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="absolute top-3 right-3 text-destructive hover:text-destructive"
+                      className="h-8 w-8 text-destructive hover:text-destructive"
                       onClick={() => handleDeleteSubmission(sub.id)}>
                       <Trash2 size={16} />
                     </Button>
@@ -345,7 +345,7 @@ export default function DashboardPage() {
             {reviewsGiven.map((review) => (
               <Card key={review.id} className="relative shadow-none">
                 <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-4">
                     <p className="text-sm font-semibold text-foreground">
                       {review.submission?.title || "Submission"}
                     </p>
@@ -359,7 +359,7 @@ export default function DashboardPage() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="absolute top-3 right-3 text-destructive hover:text-destructive"
+                        className="h-8 w-8 text-destructive hover:text-destructive"
                         onClick={() => handleDeleteReview(review.id)}>
                         <Trash2 size={16} />
                       </Button>
