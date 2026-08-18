@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Trophy, PenLine, MessageCircle, Inbox, Search, MessageSquare } from "lucide-react";
+import { Trophy, PenLine, MessageCircle, Inbox, Search, MessageSquare, Trash2 } from "lucide-react";
 
 type Tag = { id: number; name: string };
 
@@ -122,6 +122,49 @@ export default function DashboardPage() {
     }
   }, [isLoaded, isSignedIn]);
 
+  const handleDeleteSubmission = async (id: number) => {
+    try {
+      const token = await getToken();
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/submissions/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token }
+        }
+      );
+      if (!res.ok) {
+        throw new Error(`Failed to delete submission`)
+      }
+      setMySubmissions((prev) =>
+        prev.filter((submission) => submission.id !== id)
+      );
+
+    } catch (error) {
+      console.error(error);
+      setErrorMsg("Could not delete review request");
+    }
+  };
+
+  const handleDeleteReview = async (id: number) => {
+    try {
+      const token = await getToken();
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token }
+        }
+      );
+      if (!res.ok) {
+        throw new Error(`Failed to delete review`)
+      }
+      setReviewsGiven((prev) =>
+        prev.filter((review) => review.id !== id)
+      );
+
+    } catch (error) {
+      console.error(error);
+      setErrorMsg("Could not delete review");
+    }
+  };
   if (!isLoaded || loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
@@ -219,8 +262,15 @@ export default function DashboardPage() {
         ) : (
           <div className="flex flex-col gap-3">
             {mySubmissions.map((sub) => (
-              <Card key={sub.id} className="shadow-none">
+              <Card key={sub.id} className="relative shadow-none">
                 <CardContent className="flex items-center justify-between gap-4 p-4">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-3 right-3 text-destructive hover:text-destructive"
+                    onClick={() => handleDeleteSubmission(sub.id)}>
+                    <Trash2 size={16} />
+                  </Button>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-foreground">
                       {sub.title}
@@ -275,8 +325,15 @@ export default function DashboardPage() {
         ) : (
           <div className="flex flex-col gap-3">
             {reviewsGiven.map((review) => (
-              <Card key={review.id} className="shadow-none">
+              <Card key={review.id} className="relative shadow-none">
                 <CardContent className="p-4">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-3 right-3 text-destructive hover:text-destructive"
+                    onClick={() => handleDeleteReview(review.id)}>
+                    <Trash2 size={16} />
+                  </Button>
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold text-foreground">
                       {review.submission?.title || "Submission"}
