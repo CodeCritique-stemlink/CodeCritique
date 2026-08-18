@@ -19,6 +19,10 @@ const TAG_COLORS: Record<string, string> = {
   "c++": "#6c0b74",
   go: "#00A8C6",
   sql: "#D97706",
+  HTML: "#E34F26",
+  CSS: "#1572B6",
+  TailwindCSS: "#38BDF8",
+  MongoDB: "#47A248"
 };
 
 function getTextColor(hex: string) {
@@ -42,21 +46,21 @@ export default function SubmitPage() {
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
 
   useEffect(() => {
-  const loadTags = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tags`);
-    const data = await res.json();
-    setTags(data.data);
-  };
-  loadTags();
-}, []);
+    const loadTags = async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tags`);
+      const data = await res.json();
+      setTags(data.data);
+    };
+    loadTags();
+  }, []);
 
   const toggleTag = (tagId: number) => {
-  if (selectedTagIds.includes(tagId)) {
-    setSelectedTagIds(selectedTagIds.filter((id) => id !== tagId));
-  } else {
-    setSelectedTagIds([...selectedTagIds, tagId]);
-  }
-};
+    if (selectedTagIds.includes(tagId)) {
+      setSelectedTagIds(selectedTagIds.filter((id) => id !== tagId));
+    } else {
+      setSelectedTagIds([...selectedTagIds, tagId]);
+    }
+  };
 
   const handleCriteriaChange = (i: number, val: string) => {
     const newCriteria = [...criteria];
@@ -150,7 +154,7 @@ export default function SubmitPage() {
     return <p className="p-6 text-sm text-muted-foreground">Loading...</p>;
   }
 
-    if (!isSignedIn) {
+  if (!isSignedIn) {
     return (
       <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="text-lg font-semibold text-foreground">
@@ -211,7 +215,7 @@ export default function SubmitPage() {
               />
             </div>
 
-           <div className="flex flex-col gap-3 py-2">
+            <div className="flex flex-col gap-3 py-2">
               <Label>Technologies</Label>
               <div className="flex flex-wrap gap-3">
                 {tags?.map((tag) => {
