@@ -133,7 +133,7 @@ The frontend is deployed on Vercel.
 **Frontend URL:** `https://code-critique-mu.vercel.app/`
 
 ### Backend
-The backend API is deployed on Railway.
+The backend is deployed on Railway.
 
 **Backend URL:** `codecritique-production-3982.up.railway.app`
 
