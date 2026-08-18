@@ -24,6 +24,7 @@ model User {
   firstName       String?
   lastName        String?
   userName        String      @unique
+  bio             String?      @db.Text
   profileImageUrl String?
   karmaPoints     Int          @default(0)
   createdAt       DateTime     @default(now())

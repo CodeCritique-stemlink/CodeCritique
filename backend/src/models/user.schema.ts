@@ -10,6 +10,11 @@ export const updateUserSchema = z.object({
       .max(30, "Username cannot exceed 30 characters.")
       .trim()
       .optional(),
+    bio: z
+      .string()
+      .max(280, "Bio cannot exceed 280 characters.")
+      .trim()
+      .optional(),
     profileImageUrl: z
       .string()
       .url("Please provide a valid profile image URL.")
