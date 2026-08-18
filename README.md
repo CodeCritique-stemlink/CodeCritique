@@ -130,7 +130,7 @@ The application is deployed using the following services:
 ### Frontend
 The frontend is deployed on Vercel.
 
-**Frontend URL:** `https://code-critique-mu.vercel.app/`
+**Frontend URL:** `https://code-critique-mu.vercel.app`
 
 ### Backend
 The backend is deployed on Railway.
