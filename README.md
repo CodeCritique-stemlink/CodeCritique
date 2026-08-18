@@ -116,7 +116,3 @@ Core entities, defined in `backend/prisma/schema.prisma`:
 * **ReviewCriteria** - custom, per-submission criteria that reviews are scored against
 * **Rating** - a score tied to a specific review and criteria
 * **Tag** - shared between submissions and users' interests
-
-## Demo
------
-Up next
