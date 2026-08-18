@@ -6,7 +6,8 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Trophy, PenLine, MessageCircle, Inbox, Search, MessageSquare, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Trophy, PenLine, MessageCircle, Inbox, Search, MessageSquare, Trash2, Pencil } from "lucide-react";
 
 type Tag = { id: number; name: string };
 
@@ -70,6 +71,8 @@ export default function DashboardPage() {
   const [reviewsReceived, setReviewsReceived] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
+
+  const router =useRouter()
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -270,41 +273,50 @@ export default function DashboardPage() {
             {mySubmissions.map((sub) => (
               <Card key={sub.id} className="relative shadow-none">
                 <CardContent className="flex items-center justify-between gap-4 p-4">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-3 right-3 text-destructive hover:text-destructive"
-                    onClick={() => handleDeleteSubmission(sub.id)}>
-                    <Trash2 size={16} />
-                  </Button>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-foreground">
-                      {sub.title}
-                    </p>
-                    {sub.tags && sub.tags.length > 0 && (
-                      <div className="mt-1.5 flex flex-wrap gap-1.5">
-                        {sub.tags.map((tag) => (
-                          <Badge key={tag.id} variant="outline" className="text-[10px]">
-                            {tag.name}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                    <p className="mt-1.5 text-xs text-muted-foreground">
-                      {new Date(sub.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <span
-                    className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold text-white"
-                    style={{
-                      backgroundColor:
-                        sub.status === "REVIEWED"
-                          ? "var(--reviewed)"
-                          : "var(--pending)",
-                    }}
-                  >
-                    {sub.status}
-                  </span>
+                  <div className="absolute top-3 right-3 flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => router.push(`/submit/${sub.id}/edit`)}
+                    >
+                      <Pencil size={16} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-3 right-3 text-destructive hover:text-destructive"
+                      onClick={() => handleDeleteSubmission(sub.id)}>
+                      <Trash2 size={16} />
+                    </Button>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-foreground">
+                        {sub.title}
+                      </p>
+                      {sub.tags && sub.tags.length > 0 && (
+                        <div className="mt-1.5 flex flex-wrap gap-1.5">
+                          {sub.tags.map((tag) => (
+                            <Badge key={tag.id} variant="outline" className="text-[10px]">
+                              {tag.name}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                      <p className="mt-1.5 text-xs text-muted-foreground">
+                        {new Date(sub.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <span
+                      className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold text-white"
+                      style={{
+                        backgroundColor:
+                          sub.status === "REVIEWED"
+                            ? "var(--reviewed)"
+                            : "var(--pending)",
+                      }}
+                    >
+                      {sub.status}
+                    </span>
                 </CardContent>
               </Card>
             ))}
