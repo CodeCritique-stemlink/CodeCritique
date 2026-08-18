@@ -10,7 +10,8 @@ import {
 } from "@clerk/nextjs";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import MobileNav from "@/components/mobileNav";
+import MobileNav from "@/components/MobileNav";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
