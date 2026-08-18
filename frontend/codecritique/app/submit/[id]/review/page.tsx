@@ -126,11 +126,11 @@ export default function ReviewPage() {
                 }),
             });
 
-            const data = await res.json();
-
             if (res.status === 403) {
                 throw new Error("Oops! You cannot review your own code. Try finding a peer's project on the homepage dashboard instead!");
             }
+
+            const data = await res.json();
 
             if (!res.ok) {
                 throw new Error(data.message || "Failed to submit review");
