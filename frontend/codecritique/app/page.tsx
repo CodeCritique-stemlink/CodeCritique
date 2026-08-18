@@ -45,6 +45,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [personalized, setPersonalized] = useState(false);
+  const [searchTerm, setSearchTearm] = useState("")
 
   useEffect(() => {
     const loadSubmissions = async () => {
@@ -121,6 +122,19 @@ export default function Home() {
     }
   }, [isLoaded, isSignedIn]);
 
+  const filteredSubmissions = submissions.filter((submission) => {
+    const search = searchTerm.toLowerCase();
+
+    return (
+      submission.title.toLowerCase().includes(search) ||
+      submission.description.toLowerCase().includes(search) ||
+      submission.user.userName?.toLowerCase().includes(search) ||
+      submission.tags.some((tag) =>
+        tag.name.toLowerCase().includes(search)
+      )
+    );
+  });
+
   return (
     <div className="flex flex-col flex-1 bg-zinc-50 dark:bg-black">
       <main className="flex-1 w-full px-4 py-6 max-w-7xl mx-auto sm:px-6">
@@ -135,6 +149,16 @@ export default function Home() {
               </span>
             )}
           </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              placeholder="Search review requests..."
+              value={searchTerm}
+              onChange={(e) => setSearchTearm(e.target.value)}
+              className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100"
+            />
+          </div>
+
 
           {loading && (
             <p className="text-zinc-500 text-sm">Loading submissions...</p>
@@ -144,14 +168,17 @@ export default function Home() {
             <p className="text-red-600 text-sm">{errorMsg}</p>
           )}
 
-          {!loading && !errorMsg && submissions.length === 0 && (
+          {!loading && !errorMsg && filteredSubmissions.length === 0 && (
             <p className="text-zinc-500 text-sm">
-              No review requests yet. Be the first to post one.
+              {searchTerm ? "No review requests match your search."
+                : "No review requests yet. Be the first to post one."
+              }
+
             </p>
           )}
 
           <div className="flex flex-col gap-4">
-            {submissions.map((submission) => (
+            {filteredSubmissions.map((submission) => (
               <div
                 key={submission.id}
                 className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 hover:shadow-sm transition"
