@@ -19,7 +19,7 @@ CodeCritic lets developers submit a project (a title, description, and GitHub li
 
 | Layer | Technology |
 |---|---|
-| Frontend | Next.js, Tailwind CSS, Shadcn/UI, Zustand |
+| Frontend | Next.js, Tailwind CSS, Shadcn/UI |
 | Auth | Clerk |
 | Backend | Node.js + Express |
 | ORM | Prisma |
