@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, SignInButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -150,11 +150,19 @@ export default function SubmitPage() {
     return <p className="p-6 text-sm text-muted-foreground">Loading...</p>;
   }
 
-  if (!isSignedIn) {
+    if (!isSignedIn) {
     return (
-      <p className="p-6 text-sm text-muted-foreground">
-        Please sign in to post a review request
-      </p>
+      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 px-6 text-center">
+        <p className="text-lg font-semibold text-foreground">
+          Please sign in to post a review request
+        </p>
+        <p className="max-w-sm text-sm text-muted-foreground">
+          You need an account to submit your project for peer review.
+        </p>
+        <SignInButton mode="modal">
+          <Button size="lg">Sign In</Button>
+        </SignInButton>
+      </div>
     );
   }
 
