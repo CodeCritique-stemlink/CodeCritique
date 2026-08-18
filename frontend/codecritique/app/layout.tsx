@@ -52,11 +52,11 @@ export default function RootLayout({
                 <Link href="/profile" className="hover:text-zinc-900 dark:hover:text-zinc-100 transition animate-fade-in">
                   Profile
                 </Link>
-                <Link href="/submit" className="border border-gray-200 inline-flex items-center gap-2 bg-black text-white font-bold  px-3 py-1.5 rounded-md hover:text-bg-900 dark:hover:bg-zinc-100 transition">
-                  Post a Review Request
-                </Link>
                 </div>
               </Show>
+              <Link href="/submit" className="border border-gray-200 inline-flex items-center gap-2 bg-black text-white font-bold px-3 py-1.5 rounded-md hover:text-bg-900 dark:hover:bg-zinc-100 transition">
+                Post a Review Request
+              </Link>
               <Show when="signed-out">
                 <SignInButton mode="modal"><button className="text-sm font-medium px-3 py-1.5 rounded-md border border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-500 transition">Sign In</button></SignInButton>
                 <SignUpButton mode="modal"><button className="text-sm font-medium px-3 py-1.5 rounded-md bg-black text-white border border-gray-800 hover:bg-gray-500 dark:hover:bg-gray-100 transition">Sign Up</button></SignUpButton>
