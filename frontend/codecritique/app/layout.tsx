@@ -54,7 +54,7 @@ export default function RootLayout({
                 </Link>
                 </div>
               </Show>
-              <Link href="/submit" className="border border-gray-200 inline-flex items-center gap-2 bg-black text-white font-bold px-3 py-1.5 rounded-md hover:text-bg-900 dark:hover:bg-zinc-100 transition">
+              <Link href="/submit" className="border border-gray-200 inline-flex items-center gap-2 bg-black text-white font-medium px-3 py-1.5 rounded-md hover:text-bg-500 dark:hover:bg-gray-100 transition">
                 Post a Review Request
               </Link>
               <Show when="signed-out">
