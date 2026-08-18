@@ -19,7 +19,7 @@ export class UnauthorizedError extends AppError{
 }
 export class BadRequestError extends AppError{
     constructor(message:string = "Bad Request"){
-        super(message,401)
+        super(message,400)
     }
 }
 export class ForbiddenError extends AppError{
