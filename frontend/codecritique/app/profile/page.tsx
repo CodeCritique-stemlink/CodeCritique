@@ -105,7 +105,9 @@ export default function ProfilePage() {
               height: "88px",
               borderRadius: "50%",
               objectFit: "cover",
-              marginBottom: "16px",
+              objectPosition: "center",
+              display: "block",
+              margin: "0 auto 16px",
             }}
           />
         ) : (
