@@ -127,7 +127,7 @@ export default function ReviewPage() {
             });
 
             if (res.status === 403) {
-                throw new Error("Oops! You cannot review your own code. Try finding a peer's project on the homepage dashboard instead!");
+                throw new Error("Oops! You cannot review your own request. Try finding a peer's project on the homepage dashboard instead!");
             }
 
             const data = await res.json();
