@@ -123,6 +123,9 @@ export default function DashboardPage() {
   }, [isLoaded, isSignedIn]);
 
   const handleDeleteSubmission = async (id: number) => {
+    const confirmed = window.confirm("Are you sure you want to delete this review request")
+    if (!confirmed) return;
+
     try {
       const token = await getToken();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/submissions/${id}`,
@@ -145,6 +148,9 @@ export default function DashboardPage() {
   };
 
   const handleDeleteReview = async (id: number) => {
+    const confirmed = window.confirm("Are you sure you want to delete this review")
+    if (!confirmed) return;
+
     try {
       const token = await getToken();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/${id}`,
