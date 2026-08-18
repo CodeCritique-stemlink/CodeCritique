@@ -41,6 +41,7 @@ export default function EditProfilePage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
+  const [bio, setBio] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -68,6 +69,7 @@ export default function EditProfilePage() {
       setFirstName(profileData?.user?.firstName || "");
       setLastName(profileData?.user?.lastName || "");
       setUserName(profileData?.user?.userName || "");
+      setBio(profileData?.user?.bio || "");
       setProfileImageUrl(profileData?.user?.profileImageUrl || "");
 
       setLoading(false);
@@ -123,6 +125,7 @@ export default function EditProfilePage() {
           firstName,
           lastName,
           userName,
+          bio,
           profileImageUrl,
           interestedTagIds: selectedTagIds,
         }),
@@ -247,6 +250,21 @@ export default function EditProfilePage() {
             placeholder="Your username"
             style={inputStyle}
           />
+        </div>
+
+        <div style={{ marginBottom: "24px" }}>
+          <label style={labelStyle}>Bio</label>
+          <textarea
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            placeholder="Tell other developers a bit about yourself"
+            maxLength={280}
+            rows={3}
+            style={{ ...inputStyle, resize: "vertical" }}
+          />
+          <p style={{ fontSize: "12px", color: "#999", marginTop: "4px", textAlign: "right" }}>
+            {bio.length}/280
+          </p>
         </div>
 
         <h2 style={{ fontSize: "15px", fontWeight: 600, marginBottom: "10px" }}>Tech Stack</h2>
