@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 
-import type { Submission,ReviewCriteria} from "@/app/types";
+import type { Submission, ReviewCriteria } from "@/app/types";
 
 export default function ReviewPage() {
     const { getToken, isSignedIn, isLoaded } = useAuth();
@@ -39,6 +39,10 @@ export default function ReviewPage() {
                         headers: { Authorization: "Bearer " + token, },
                     }
                 );
+                if (submissionRes.status === 403) {
+                    throw new Error("You are not allowed to access or review your own submission logic!");
+                }
+
                 const submissionData = await submissionRes.json();
                 if (!submissionRes.ok) {
                     throw new Error(
@@ -252,8 +256,8 @@ export default function ReviewPage() {
 
                         <div className="mb-6 space-y-2">
                             <Label htmlFor="improvements"> Areas for Improvement</Label>
-                            <Textarea id="improvements"value={improvements}onChange={(e) => setImprovements(e.target.value)}
-                             placeholder="What could be improved?"rows={5} required/>
+                            <Textarea id="improvements" value={improvements} onChange={(e) => setImprovements(e.target.value)}
+                                placeholder="What could be improved?" rows={5} required />
                         </div>
 
                         <div className="mb-7 space-y-2">
@@ -261,7 +265,7 @@ export default function ReviewPage() {
                             </Label>
 
                             <Textarea id="resources" value={resources} onChange={(e) => setResources(e.target.value)}
-                                placeholder="Share useful documentation, tutorials, or links..." rows={3}/>
+                                placeholder="Share useful documentation, tutorials, or links..." rows={3} />
                         </div>
                         <div className="border-t pt-7">
                             <h3 className="mb-1.5 text-lg font-bold">Review Criteria </h3>
@@ -275,7 +279,7 @@ export default function ReviewPage() {
                             ) : (
                                 <div className="space-y-4">
                                     {criteria.map((criterion) => (
-                                        <Card key={criterion.id}className="shadow-none">
+                                        <Card key={criterion.id} className="shadow-none">
                                             <CardContent className="p-4">
                                                 <p className="mb-1 text-sm font-semibold">{criterion.name}</p>
                                                 <p className="mb-3 text-xs text-zinc-700"> Select a score</p>
@@ -285,9 +289,9 @@ export default function ReviewPage() {
                                                             ratings[criterion.id] === score;
 
                                                         return (
-                                                            <Button 
-                                                            key={score} type="button" variant={selected? "default" : "outline"}
-                                                                size="icon"className="h-9 w-9 text-xs"onClick={() =>
+                                                            <Button
+                                                                key={score} type="button" variant={selected ? "default" : "outline"}
+                                                                size="icon" className="h-9 w-9 text-xs" onClick={() =>
                                                                     selectRating(criterion.id, score)
                                                                 }>
                                                                 {score}
@@ -318,11 +322,11 @@ export default function ReviewPage() {
                         )}
 
                         <div className="mt-7 flex justify-end gap-2.5">
-                            <Button type="button" variant="outline" onClick={() =>router.push(`/submit/${submissionId}`)}
+                            <Button type="button" variant="outline" onClick={() => router.push(`/submit/${submissionId}`)}
                                 disabled={saving}>Cancel
                             </Button>
 
-                            <Button type="button" onClick={handleSubmit} disabled={saving || criteria.length === 0 }>
+                            <Button type="button" onClick={handleSubmit} disabled={saving || criteria.length === 0}>
                                 {saving ? "Submitting..." : "Submit Review"}
                             </Button>
                         </div>
