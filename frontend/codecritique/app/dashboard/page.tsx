@@ -123,6 +123,9 @@ export default function DashboardPage() {
   }, [isLoaded, isSignedIn]);
 
   const handleDeleteSubmission = async (id: number) => {
+    const confirmed = window.confirm("Are you sure you want to delete this review request")
+    if (!confirmed) return;
+
     try {
       const token = await getToken();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/submissions/${id}`,
@@ -145,6 +148,9 @@ export default function DashboardPage() {
   };
 
   const handleDeleteReview = async (id: number) => {
+    const confirmed = window.confirm("Are you sure you want to delete this review")
+    if (!confirmed) return;
+
     try {
       const token = await getToken();
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/${id}`,
@@ -327,23 +333,25 @@ export default function DashboardPage() {
             {reviewsGiven.map((review) => (
               <Card key={review.id} className="relative shadow-none">
                 <CardContent className="p-4">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-3 right-3 text-destructive hover:text-destructive"
-                    onClick={() => handleDeleteReview(review.id)}>
-                    <Trash2 size={16} />
-                  </Button>
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold text-foreground">
                       {review.submission?.title || "Submission"}
                     </p>
-                    <Badge
-                      variant="outline"
-                      className="border-secondary text-secondary-foreground"
-                    >
-                      Review Submitted
-                    </Badge>
+                    <div className="flex shrink-0 items-center gap-2">
+                      <Badge
+                        variant="outline"
+                        className="border-secondary text-secondary-foreground"
+                      >
+                        Review Submitted
+                      </Badge>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-3 right-3 text-destructive hover:text-destructive"
+                        onClick={() => handleDeleteReview(review.id)}>
+                        <Trash2 size={16} />
+                      </Button>
+                    </div>
                   </div>
                   <p className="mt-1.5 text-sm text-muted-foreground">
                     {review.strengths}
