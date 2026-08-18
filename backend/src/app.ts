@@ -3,31 +3,21 @@ import express, { type Request, type Response } from "express";
 import { clerkMiddleware } from '@clerk/express';
 import globalRouter from "./routes/index.js";
 import cors from "cors";
+import { includes } from "zod";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 
 app.use(express.json());
 
-// app.use(cors({
-// origin: "http://localhost:3000",
-// credentials: true,
-// }));
-// app.use(cors({
-//   origin: (origin, callback) => {
-  
-//     if (!origin || origin.startsWith("http://localhost:") || origin.endsWith(".vercel.app")) {
-//       callback(null, true);
-//     } else {
-//       callback(null, true); 
-//     }
-//   },
-//   credentials: true,
-// }));
+const allowOrigins = [
+  "http://localhost:3000",
+  "https://code-critique-mu.vercel.app"
+]
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || origin.startsWith("http://localhost:") || origin.endsWith(".vercel.app") || origin.endsWith(".railway.app")) {
+    if (!origin || allowOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS")); 
