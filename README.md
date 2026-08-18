@@ -19,7 +19,7 @@ CodeCritic lets developers submit a project (a title, description, and GitHub li
 
 | Layer | Technology |
 |---|---|
-| Frontend | Next.js, Tailwind CSS, Shadcn/UI, Zustand |
+| Frontend | Next.js, Tailwind CSS, Shadcn/UI |
 | Auth | Clerk |
 | Backend | Node.js + Express |
 | ORM | Prisma |
@@ -116,3 +116,27 @@ Core entities, defined in `backend/prisma/schema.prisma`:
 * **ReviewCriteria** - custom, per-submission criteria that reviews are scored against
 * **Rating** - a score tied to a specific review and criteria
 * **Tag** - shared between submissions and users' interests
+
+## Deployment
+
+The application is deployed using the following services:
+
+| Component | Platform |
+|---|---|
+| Frontend | Vercel |
+| Backend | Railway |
+| Database | PostgreSQL (Railway) |
+
+### Frontend
+The frontend is deployed on Vercel.
+
+**Frontend URL:** `https://code-critique-mu.vercel.app`
+
+### Backend
+The backend is deployed on Railway.
+
+**Backend URL:** `codecritique-production-3982.up.railway.app`
+
+### Database
+The application uses PostgreSQL as its database. The PostgreSQL database is hosted through Railway and connected to the backend using environment variables.
+
