@@ -13,7 +13,10 @@ See `er-diagram.png` for the full entity-relationship diagram.
 
 ## Key design decisions
 
-- **Tags are many-to-many on both User and Submission.** A user's tech stack (interested tags) is matched against a submission's tags to power the personalized feed - submissions sharing more tags with the logged-in user's tech stack rank higher.
-- **Ratings are stored per-criterion, not as a single score per review.** Since each submission defines its own custom criteria, reviewers score each one individually rather than giving one overall number.
-- **Karma is a plain integer on User**, incremented by a fixed +2 per review submitted — matches the spec's requirement that Karma is static, not dynamically weighted.
-- **Submission status** (`PENDING` / `REVIEWED`) is derived from whether any reviews exist, not manually set by users.
+1. **Tags are many-to-many on both User and Submission.** A user's tech stack (interested tags) is matched against a submission's tags to power the personalized feed - submissions sharing more tags with the logged-in user's tech stack rank higher.
+
+2. **Ratings are stored per-criterion, not as a single score per review.** Since each submission defines its own custom criteria, reviewers score each one individually rather than giving one overall number.
+
+3. **Karma is a plain integer on User**, incremented by a fixed +2 per review submitted - matches the spec's requirement that Karma is static, not dynamically weighted. 
+
+4. **Submission status** (`PENDING` / `REVIEWED`) is derived from whether any reviews exist, not manually set by users.
